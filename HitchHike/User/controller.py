@@ -1,6 +1,6 @@
 import os
 import couchdb
-from User.models import User
+from .models import User
 from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
