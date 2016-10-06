@@ -1,4 +1,3 @@
-
 import os
 import couchdb
 from User.models import User
@@ -20,12 +19,11 @@ def signup():
         user.phone = form_data.get('phone',None)
         # user.gender = form_data.get('gender',None)
 
-	from database import Database
-	database=Database()
-        db = database.getDB()
+        db = g.db
         db[user.email] = user._data
 
-        return redirect(url_for('login'))
+        # return redirect(url_for('login'))
+        return redirect(url_for('.login'))
 
     return render_template('signup.html')
 
@@ -36,21 +34,20 @@ def login():
 
         email = request.form['email']
        
-	from database import Database
-        database=Database()
-        db = database.getDB()
-        
+        db = g.db
         user = db.get(email,None)
         if user is not None:
             if request.form['password'] == user['password']:
                 session['user'] = user
-                return redirect(url_for('after_login'))
-        # if request.form['password'] == 'password':
-        #     session['user'] = request.form['email']
-        #     return redirect(url_for('after_login'))
-	print(email)#+ " " + password)
-	print(user)
+                return redirect(url_for('.after_login'))
 
     return render_template('login.html')        
 
 
+
+@user.route('/home')
+def after_login():
+    if g.user:
+        return render_template('welcome.html')
+
+    return redirect(url_for('.login'))
