@@ -1,27 +1,81 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <title>login page</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="static/stylesheets/style.css">
-  </head>
+<head>
 
-  <body>
-    <table>
-      <tr>
-        <td style= "width:30%;">
-          <img class = "newappIcon" src="static/images/newapp-icon.png">
-        <td>
-            <h1>Please login</h1>
-            <form method="POST">
-                <input type="email" name="email">
-                <input type="password" name="password">
-                <input type="submit">
-            </form>
-    </table>
-  </body>
+  <title>Login, Sign up Header</title>
+
+  <link rel="stylesheet" href="static/stylesheets/header-login-signup.css">
+  <link rel="stylesheet" href="static/stylesheets/lstyle.css">
+  <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+<header class="header-login-signup">
+
+  <div class="header-limiter">
+
+    <h1><a href="#">HitchHike</a></h1>
+    <ul>
+      <li><a href="/signup">Sign up</a></li>
+    </ul>
+
+  </div>
+
+</header>
+
+<div class="container">
+  
+  <div class="card">
+      <h1 class="title">Login as Car Driver</h1>
+      <form method="POST">
+        <div class="input-container">
+            <input type="text" id="Username" required="required"/>
+            <label for="Username">Username</label>
+            <div class="bar"></div>
+          </div>
+          
+          <div class="input-container">
+            <input type="password" id="Password" required="required"/>
+            <label for="Password">Password</label>
+            <div class="bar"></div>
+          </div>
+        
+          <div class="button-container">
+            <button><span>Go</span></button>
+          </div>
+        
+          <div class="footer"><a href="#">Forgot your password?</a></div>
+      </form>
+  </div>
+
+<div class="container2">
+  <div class="card"></div>
+  <div class="card">
+      <h1 class="title">Login as HitchHiker</h1>
+      <form method="POST" >
+        <div class="input-container">
+            <input type="text" id="Username" required="required"/>
+            <label for="Username">Username</label>
+            <div class="bar"></div>
+          </div>
+          
+          <div class="input-container">
+            <input type="password" id="Password" required="required"/>
+            <label for="Password">Password</label>
+            <div class="bar"></div>
+          </div>
+        
+          <div class="button-container">
+            <button><span>Go</span></button>
+          </div>
+        
+          <div class="footer"><a href="#">Forgot your password?</a></div>
+      </form>
+  </div>
+
+</body>
 
 </html>

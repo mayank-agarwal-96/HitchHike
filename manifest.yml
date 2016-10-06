@@ -6,4 +6,4 @@ applications:
   name: hitchhike
   host: hitchhike
   disk_quota: 1024M
-  buildpack: python_buildpack
+  buildpack: https://github.com/heroku/heroku-buildpack-python.git
