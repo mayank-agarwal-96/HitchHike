@@ -17,7 +17,8 @@ app.register_blueprint(user,url_prefix="/user")
 
 @app.route('/')
 def Welcome():
-    return app.send_static_file('index.html')
+    return redirect(url_for('user.login'))
+    # return app.send_static_file('index.html')
 
 def get_db():
     if not hasattr(g, 'db'):
