@@ -30,33 +30,35 @@
   <div class="card">
     <h1 class="title">Register</h1>
       <form method="POST">
+        
+	
         <div class="input-container">
-            <input type="text" id="Username" required="required"/>
+            <input type="text" id="name" name="name" required="required"/>
+            <label for="name">Name</label>
+            <div class="bar"></div>
+          </div>
+
+	<div class="input-container">
+            <input type="text" id="Username" name="username" required="required"/>
             <label for="Username">Username</label>
             <div class="bar"></div>
           </div>
           
           <div class="input-container">
-            <input type="password" id="Password" required="required"/>
+            <input type="password" id="Password" name="password" required="required"/>
             <label for="Password">Password</label>
             <div class="bar"></div>
           </div>
           
           <div class="input-container">
-            <input type="password" id="Repeat Password" required="required"/>
-            <label for="Repeat Password">Repeat Password</label>
+            <input type="email" id="email" name="email" required="required"/>
+            <label for="email">e-mail</label>
             <div class="bar"></div>
           </div>
 
           <div class="input-container">
-            <input type="password" id="Repeat Password" required="required"/>
-            <label for="Repeat Password">e-mail</label>
-            <div class="bar"></div>
-          </div>
-
-          <div class="input-container">
-            <input type="password" id="Repeat Password" required="required"/>
-            <label for="Repeat Password">Phone number</label>
+            <input type="text" id="phone" name="phone" required="required"/>
+            <label for="phone">Phone number</label>
             <div class="bar"></div>
           </div>
         

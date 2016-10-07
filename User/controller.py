@@ -1,7 +1,7 @@
 
 import os
 import couchdb
-
+from User.models import User
 from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
@@ -48,6 +48,8 @@ def login():
         # if request.form['password'] == 'password':
         #     session['user'] = request.form['email']
         #     return redirect(url_for('after_login'))
+	print(email)#+ " " + password)
+	print(user)
 
     return render_template('login.html')        
 
