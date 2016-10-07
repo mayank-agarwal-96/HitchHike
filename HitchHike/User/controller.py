@@ -16,7 +16,8 @@ def signup():
         user.name = form_data.get('name',None)
         user.username = form_data.get('username',None)
         user.email = form_data.get('email',None)
-        user.password = form_data.get('password',None)
+        password = form_data.get('password',None)
+        user.set_password(password)
         user.phone = form_data.get('phone',None)
         # user.gender = form_data.get('gender',None)
 
@@ -35,11 +36,13 @@ def login():
 
         email = request.form['email']
        
-        db = g.db
-        user = db.get(email,None)
+        # db = g.db
+        user = User.get_user(email) 
+        print user
         if user is not None:
-            if request.form['password'] == user['password']:
-                session['user'] = user
+            if user.check_password(request.form['password']):
+                print "verified"
+                session['user'] = user._data
                 return redirect(url_for('.after_login'))
 
     return render_template('login.html')        
