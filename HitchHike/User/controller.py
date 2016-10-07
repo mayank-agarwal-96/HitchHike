@@ -35,13 +35,10 @@ def login():
         session.pop('user', None)
 
         email = request.form['email']
-       
-        # db = g.db
         user = User.get_user(email) 
         print user
         if user is not None:
             if user.check_password(request.form['password']):
-                print "verified"
                 session['user'] = user._data
                 return redirect(url_for('.after_login'))
 
