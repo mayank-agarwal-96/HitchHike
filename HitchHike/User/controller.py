@@ -1,9 +1,10 @@
 import os
-import couchdb
+
 from .models import User
 from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
 from datetime import datetime
-from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
+
+
 user=Blueprint("user",__name__,template_folder="../template",static_folder='../static')
 @user.route('/signup', methods=['GET', 'POST'])
 def signup():

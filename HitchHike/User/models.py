@@ -1,5 +1,6 @@
 import os
 import couchdb
+
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 
