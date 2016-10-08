@@ -8,9 +8,13 @@ dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard"
 
 @dashboard.route('/',methods=['GET'])
 def dashboardpage():
-    print(GOOGLE_API_KEY)
-    return render_template('dashboard/index.html',map_key=GOOGLE_API_KEY)
+    if g.user:
+        print(GOOGLE_API_KEY)
+        return render_template('dashboard/index.html',map_key=GOOGLE_API_KEY)
+    return redirect(url_for('user.login'))
 
 @dashboard.route('/profile')
 def profile():
-	return render_template('dashboard/profile.html')
+    if g.user:
+	    return render_template('dashboard/profile.html')
+    return redirect(url_for('user.login'))

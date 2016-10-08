@@ -57,6 +57,6 @@ def after_login():
     return redirect(url_for('.login'))
 
 @user.route('/logout')
-def sign_out():
+def logout():
     session.pop('user', None)
     return redirect(url_for('.login'))
