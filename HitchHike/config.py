@@ -5,4 +5,5 @@ cloudant_data = {
     'port' : '443'
 }
 
+GOOGLE_API_KEY="AIzaSyCMXvF5nhmLpAYb6HcZ4YtUWDWlGcMlpE8"
 
