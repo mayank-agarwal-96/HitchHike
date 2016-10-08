@@ -40,7 +40,7 @@ def login():
         if user is not None:
             if user.check_password(request.form['password']):
                 session['user'] = user._data
-                return redirect(url_for('.after_login'))
+                return redirect(url_for('dashboard.dashboardpage'))
 
     return render_template('login.html')        
 
@@ -54,4 +54,9 @@ def after_login():
     if g.user:
         return render_template('welcome.html')
 
+    return redirect(url_for('.login'))
+
+@user.route('/logout')
+def sign_out():
+    session.pop('user', None)
     return redirect(url_for('.login'))
