@@ -5,12 +5,13 @@ from flask import Flask, session, redirect, render_template, g, url_for, request
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 from User.controller import user
+from Dashboard.controller import dashboard
 from config import cloudant_data
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.register_blueprint(user,url_prefix="/user")
-
+app.register_blueprint(dashboard,url_prefix="/dashboard")
 # @app.teardown_appcontext
 # def close_db(error):
 #     if hasattr(g, 'db')

@@ -44,7 +44,10 @@ def login():
 
     return render_template('login.html')        
 
-
+@user.route('/update',methods=['PUT'])
+def update():
+    if request.method == 'PUT':
+        pass
 
 @user.route('/home')
 def after_login():
