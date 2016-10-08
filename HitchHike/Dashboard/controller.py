@@ -11,4 +11,6 @@ def dashboardpage():
     print(GOOGLE_API_KEY)
     return render_template('dashboard/index.html',map_key=GOOGLE_API_KEY)
 
-
+@dashboard.route('/profile')
+def profile():
+	return render_template('dashboard/profile.html')
