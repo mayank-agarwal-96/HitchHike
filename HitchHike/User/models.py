@@ -18,15 +18,6 @@ class User(Document):
     gender = BooleanField()
     created = DateTimeField(default=datetime.now)
 
-    @classmethod
-    def all(cls,db):
-        return cls.view(db,'_design/user/_view/all-users')
-
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
 
     @classmethod
     def get_user(cls,id):
@@ -37,3 +28,33 @@ class User(Document):
             return None
         
         return cls.wrap(user)
+    
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.email
+            
+
+    @classmethod
+    def all(cls,db):
+        return cls.view(db,'_design/user/_view/all-users')
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def save(self):
+        db = g.db
+        db[self.email] = self._data

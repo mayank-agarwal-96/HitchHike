@@ -3,9 +3,15 @@ import os
 from .models import User
 from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
 from datetime import datetime
-
+from flask_login import login_user, logout_user, login_required
+from HitchHike.welcome import login_manager
 
 user=Blueprint("user",__name__,template_folder="../template",static_folder='../static')
+
+@login_manager.user_loader
+def load_user(email):
+    return User.get_user(email)
+
 @user.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == "POST":
@@ -21,9 +27,7 @@ def signup():
         user.phone = form_data.get('phone',None)
         # user.gender = form_data.get('gender',None)
 
-        db = g.db
-        db[user.email] = user._data
-
+        user.save()
         # return redirect(url_for('login'))
         return redirect(url_for('.login'))
 
@@ -36,11 +40,10 @@ def login():
 
         email = request.form['email']
         user = User.get_user(email) 
-        print user
-        if user is not None:
-            if user.check_password(request.form['password']):
-                session['user'] = user._data
-                return redirect(url_for('dashboard.dashboardpage'))
+        # print user
+        if user and user.check_password(request.form['password']):
+            login_user(user, remember=True)
+            return redirect(url_for('dashboard.dashboardpage'))
 
     return render_template('login.html')        
 
@@ -49,14 +52,16 @@ def update():
     if request.method == 'PUT':
         pass
 
-@user.route('/home')
-def after_login():
-    if g.user:
-        return render_template('welcome.html')
+# @user.route('/home')
+# def after_login():
+#     if g.user:
+#         return render_template('welcome.html')
 
-    return redirect(url_for('.login'))
+#     return redirect(url_for('.login'))
 
 @user.route('/logout')
+@login_required
 def logout():
-    session.pop('user', None)
+    # session.pop('user', None)
+    logout_user()
     return redirect(url_for('.login'))

@@ -4,17 +4,18 @@ import couchdb
 from flask import Flask, session, redirect, render_template, g, url_for, request
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
-from User.controller import user
-from Dashboard.controller import dashboard
 from config import cloudant_data
+from flask_login import LoginManager
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-app.register_blueprint(user,url_prefix="/user")
-app.register_blueprint(dashboard,url_prefix="/dashboard")
 # @app.teardown_appcontext
 # def close_db(error):
 #     if hasattr(g, 'db')
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'user.login'
 
 @app.route('/')
 def Welcome():
@@ -34,6 +35,11 @@ def get_db():
 @app.before_request
 def before_request():
     g.db = get_db()
-    g.user = None
-    if 'user' in session:
-        g.user = session['user']
+    # g.user = None
+    # if 'user' in session:
+    #     g.user = session['user']
+
+from User.controller import user    # To prevent circular imports
+from Dashboard.controller import dashboard
+app.register_blueprint(user,url_prefix="/user")
+app.register_blueprint(dashboard,url_prefix="/dashboard")
