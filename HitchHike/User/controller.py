@@ -13,7 +13,7 @@ def load_user(email):
     return User.get_user(email)
 
 @user.route('/hitchhiker/signup', methods=['GET', 'POST'])
-def HitchHikerSignUp():
+def hitchhikersignup():
     if request.method == "POST":
 
         form_data = request.form
@@ -35,7 +35,7 @@ def HitchHikerSignUp():
 
 
 @user.route('/signup', methods=['GET', 'POST'])
-def CarDriverSignup():
+def cardriversignup():
     if request.method == "POST":
 
         form_data = request.form
