@@ -58,3 +58,7 @@ class User(Document):
     def save(self):
         db = g.db
         db[self.email] = self._data
+class HitchHiker(User):
+    pass
+class CarDriver(User):
+    pass
