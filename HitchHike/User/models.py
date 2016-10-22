@@ -1,6 +1,6 @@
 import os
 import couchdb
-
+from HitchHike.config import GOOGLE_API_KEY  
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,7 +28,10 @@ class User(Document):
             return None
         
         return cls.wrap(user)
-    
+ 
+    def get_username(self):
+        return self.username
+        
     @property
     def is_authenticated(self):
         return True
@@ -62,3 +65,11 @@ class HitchHiker(User):
     pass
 class CarDriver(User):
     pass
+class CurrentRequestingHitch():
+    hitch_hike_email=TextField()
+    car_driver_email=TextField()
+    start_point=TextField()
+    created = DateTimeField(default=datetime.now)
+    
+    def check(self,car_location):
+        

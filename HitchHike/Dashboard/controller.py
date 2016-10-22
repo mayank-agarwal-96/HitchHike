@@ -21,3 +21,10 @@ def dashboardpage():
 def profile():
 	return render_template('dashboard/profile.html')
     # return redirect(url_for('user.login'))
+@dashboard.route('/hitchhikerdashboard',methods=['GET'])
+@login_required
+def hitchhikedashboardpage():
+    # if g.user:
+        # print(GOOGLE_API_KEY)
+    return render_template('dashboard/user.html',map_key=GOOGLE_API_KEY)
+ 

@@ -1,7 +1,9 @@
 import os
 
-from HitchHike.welcome import app
-
+from HitchHike.welcome import app,socketio
+from mysocket import MyNamespace 
 port = os.getenv('PORT', '5000')
+socketio.on_namespace(MyNamespace('/test'))
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=int(port),debug=True)
+	socketio.run(app)
+	

@@ -3,6 +3,33 @@
 <head>
 <link rel="stylesheet" href="static/stylesheets/dashboard.css" />
 <script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+ 
+        <script type="text/javascript" charset="utf-8">
+            
+        $(document).ready(function() {
+            namespace = '/test';
+
+            // Connect to the Socket.IO server.
+            // The connection URL has the following format:
+            //     http[s]://<domain>:<port>[/<namespace>]
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+            // Event handler for new connections.
+            // The callback function is invoked when a connection with the
+            // server is established.
+            socket.on('connect', function() {
+                socket.emit('my_event', {data: 'I\'m connected!'});
+            });
+            socket.on('my_response', function(msg) {
+                $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+            });
+	    $('#target').click(function(){
+	       socket.emit('get_rides',{start:$('#start').val(),stop:$('#stop').val()});
+            });
+
+         });
 function openNav() {
     document.getElementById("mySidenav").style.display = "block";
 }
@@ -34,6 +61,7 @@ function closeNav() {
 </div>
 <div ID="floating-panel" id="box" class="card floating-panel search-size">
  <div class="input-container">
+    <div id="log"></div>
     <input type="text" id="start" name="start" required="required"/>
     <label for="start">Start</label>
     <div class="bar"></div>
