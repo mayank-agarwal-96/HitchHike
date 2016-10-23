@@ -58,7 +58,11 @@ class User(Document):
     def save(self):
         db = g.db
         db[self.email] = self._data
+
+
 class HitchHiker(User):
-    pass
+    user_type = TextField(default='hitchhiker')
+
+
 class CarDriver(User):
-    pass
+    user_type = TextField(default='car_owner')
