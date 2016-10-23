@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="static/stylesheets/dashboard.css" />
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.display = "block";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.display = "none";
+}
+</script>
+<link rel="stylesheet" href="static/stylesheets/lstyle.css">
+ 
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a>
+  <img class="img-circle" src="static/images/rounded-image-250x250.png">
+  </a>
+  
+  <a href="#"><h3>USER NAME</h3></a>
+  <a href={{ url_for('dashboard.dashboardpage') }}>Ride</a>
+  <a href={{ url_for('dashboard.profile') }}>Profile</a>
+  <a href="#">Ride History</a>
+  <a href={{ url_for('user.logout') }}>Sign Out</a>
+
+</div>
+<div class="floating-panel ham">
+
+<a style="width:30px;font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</a>
+</div>
+<div ID="floating-panel" id="box" class="card floating-panel search-size">
+ <div class="input-container">
+    <input type="text" id="start" name="start" required="required"/>
+    <label for="start">Start</label>
+    <div class="bar"></div>
+ </div>
+
+ <div class="input-container">
+    <input type="text" id="end" name="end" required="required"/>
+    <label for="end">End</label>
+    <div class="bar"></div>
+  </div>
+
+  <div class="button-container">
+    <button name="search" ID="search"><span>Go</span></button>
+  </div>
+</div>
+<div id="map"></div>
+<script>
+function initMap() {
+var directionsService = new google.maps.DirectionsService;
+var directionsDisplay = new google.maps.DirectionsRenderer;
+var map = new google.maps.Map(document.getElementById('map'), {
+  zoom: 7,
+  center: {lat: 41.85, lng: -87.65}
+});
+directionsDisplay.setMap(map);
+
+var onChangeHandler = function() {
+  calculateAndDisplayRoute(directionsService, directionsDisplay);
+  var element = document.getElementById('map').style.zIndex='6';
+};
+document.getElementById('search').addEventListener('click', onChangeHandler);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+directionsService.route({
+  origin: document.getElementById('start').value,
+  destination: document.getElementById('end').value,
+  travelMode: 'DRIVING'
+}, function(response, status) {
+  if (status === 'OK') {
+	directionsDisplay.setDirections(response);
+  } else {
+	window.alert('Directions request failed due to ' + status);
+  }
+});
+}
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initMap">
+</script>
+ 
+</body>
+</html> 
+
