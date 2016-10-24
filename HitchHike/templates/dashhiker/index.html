@@ -109,6 +109,7 @@
   <body>
       <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
       <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
+      <button id="search" class="controls">Search</button>
       
       <div id="wrapper" style="height:100%; width:100%">
 
@@ -143,7 +144,17 @@
         });
     </script>
     <script>
-      function initMap() {
+        
+         var socket = io.connect('http://' +  document.domain+ ':' + location.port);
+  
+        socket.on('connect', function() {
+            socket.emit('joined', {});
+        });
+//        socket.on('message',function(msg){
+//            alert(msg['orig']);
+//        })
+        
+      function initMap() {          
         var origin_place_id = null;
         var destination_place_id = null;
         var travel_mode = 'DRIVING';
@@ -190,8 +201,11 @@
           // If the place has a geometry, store its place ID and route if we have
           // the other place ID
           origin_place_id = place.place_id;
-          route(origin_place_id, destination_place_id, travel_mode,
-                directionsService, directionsDisplay);
+            
+            $("#search").on('click',function(){          
+                route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
+
+            });
         });
 
         destination_autocomplete.addListener('place_changed', function() {
@@ -206,8 +220,11 @@
           // the other place ID
           // console.log(place);
           destination_place_id = place.place_id;
-          route(origin_place_id, destination_place_id, travel_mode,
-                directionsService, directionsDisplay);
+            
+            $("#search").on('click',function(){          
+                route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
+
+            });
         });
 
         function route(origin_place_id, destination_place_id, travel_mode,
@@ -215,27 +232,16 @@
           if (!origin_place_id || !destination_place_id) {
             return;
           }
-          var socket = io.connect('http://' +  document.domain+ ':' + location.port);
-
-          socket.on('connect', function(){
-            socket.emit('search', { orig : origin_place_id, dest : destination_place_id});
-          });
-
-          socket.on('search', function(msg){
-            // alert(msg);
-            console.log(msg);
-          });
-
-          directionsService.route({
+            
+            directionsService.route({
             origin: {'placeId': origin_place_id},
             destination: {'placeId': destination_place_id},
             travelMode: travel_mode
           }, function(response, status) {
             if (status === 'OK') {
               directionsDisplay.setDirections(response);
-            } else {
-              window.alert('Directions request failed due to ' + status);
-            }
+//                socket.send({orig: origin_place_id, dest: destination_place_id});
+            } else  window.alert('Directions request failed due to ' + status);
           });
         }
       }
