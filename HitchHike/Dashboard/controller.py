@@ -4,8 +4,8 @@ from flask import Flask,Blueprint,session, redirect, render_template, g, url_for
 from datetime import datetime
 from HitchHike.config import GOOGLE_API_KEY
 from flask_login import login_required, current_user
-from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
-from HitchHike.welcome import socketio
+# from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
+# from HitchHike.welcome import socketio
 
 
 dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard",static_folder='../static')
@@ -13,14 +13,13 @@ dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard"
 @dashboard.route('/driver',methods=['GET'])
 @login_required
 def dash_driver():
-    # user_id = current_user.get_id()
     return render_template('dashdriver/index.html',map_key=GOOGLE_API_KEY)
+    # else:
+    # 	return redirect(url_for('user.login'))
 
 @dashboard.route('/hitchhiker',methods=['GET'])
 @login_required
 def dash_user():
-    user_id = current_user.get_id()
-    print user_id
     return render_template('dashhiker/index.html',map_key=GOOGLE_API_KEY)
 
 @dashboard.route('/profile')
@@ -45,12 +44,12 @@ def profile():
 #    # clients.append(request.sid)
 #
 #
-@socketio.on('joined')
-def join(message=None):
-    """Sent by clients when they enter a room.
-    A status message is broadcast to all people in the room."""
-    room = "prafful"#session.get('user_id',None)    
-    join_room(room)
-    #emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
-    print "helllloooooooooo"
-    print rooms['']['prafful']
+# @socketio.on('joined')
+# def join(message=None):
+#     """Sent by clients when they enter a room.
+#     A status message is broadcast to all people in the room."""
+#     room = "prafful"#session.get('user_id',None)    
+#     join_room(room)
+#     #emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
+#     print "helllloooooooooo"
+#     print rooms['']['prafful']

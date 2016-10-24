@@ -62,37 +62,29 @@ def login():
         # session.pop('user', None)
         if 'hitch-login' in request.form:
             email = request.form.get('HitchHikerEmail', None)
-            print email
+            # print email
             if email is not None:
-                user = User.get_user(email)
-                print user
+                user = HitchHiker.get_user(email)
+                # print user
                 if user and user.check_password(request.form['hpassword']):
-                    print "match"
                     login_user(user, remember=True)
                     return redirect(url_for('dashboard.dash_user'))
+                return redirect(url_for('.login'))
+            return redirect(url_for('.login'))
 
 
         elif 'car-login' in request.form:
             email = request.form.get('CarDriverEmail', None)
             if email is not None:
-                user = User.get_user(email)
+                user = CarDriver.get_user(email)
+                # print user.user_type
                 if user and user.check_password(request.form['password']):
+                    
                     login_user(user, remember=True)
                     return redirect(url_for('dashboard.dash_driver'))
-        # hitchhikeremail = request.form.get('HitchHikerEmail',None)
-        # cardriveremail = request.form.get('CarDriverEmail',None)
-        # if cardriveremail is not None:
-        #     user = User.get_user(cardriveremail) 
-        # # print user
-        #     if user and user.check_password(request.form['password']):
-        #         login_user(user, remember=True)
-        #         return redirect(url_for('dashboard.dashboardpage'))
-        # if hitchhikeremail is not None:
-        #     user = User.get_user(hitchhikeremail) 
-        # # print user
-        #     if user and user.check_password(request.form['password2']):
-        #         login_user(user, remember=True)
-        #         return redirect(url_for('dashboard.dashboardpage'))
+
+                return redirect(url_for('.login'))
+            return redirect(url_for('.login'))
  
     return render_template('login.html')        
 

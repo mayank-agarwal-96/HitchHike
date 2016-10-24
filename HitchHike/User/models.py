@@ -23,7 +23,7 @@ class User(Document):
     def get_user(cls,id):
         db = g.db
         user = db.get(id,None)
-
+        # print user
         if user is None:
             return None
         
@@ -62,7 +62,29 @@ class User(Document):
 
 class HitchHiker(User):
     user_type = TextField(default='hitchhiker')
+    
+
+    @classmethod
+    def get_user(cls, id):
+        db = g.db
+        user = db.get(id,None)
+        # print user
+        if user is None:
+            return None
+        
+        return cls.wrap(user)    
 
 
 class CarDriver(User):
     user_type = TextField(default='car_owner')
+
+
+    @classmethod
+    def get_user(cls, id):
+        db = g.db
+        user = db.get(id,None)
+        # print user
+        if user is None:
+            return None
+        
+        return cls.wrap(user)
