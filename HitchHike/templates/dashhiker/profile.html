@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Setting</title>
+
+  <link rel="stylesheet" href="static/stylesheets/header-login-signup.css">
+  <link rel="stylesheet" href="static/stylesheets/lstyle.css">
+  <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="static/stylesheets/dashboard.css">
+
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.display = "block";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.display = "none";
+}
+</script>
+</head>
+
+<body>
+<!-- 
+<header class="header-login-signup">
+
+  <div class="header-limiter">
+
+    <h1><a href="#">HitchHike</a></h1>
+    <ul>
+      <li><a href="#">back to dashboard</a></li>
+    </ul>
+
+  </div>
+
+</header>
+ -->
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a>
+  <img class="img-circle" src="static/images/rounded-image-250x250.png">
+  </a>
+  
+  <a href="#"><h3>USER NAME</h3></a>
+  <a href={{ url_for('dashboard.dashboardpage') }}>Ride</a>
+  <a href={{ url_for('dashboard.profile') }}>Profile</a>
+  <a href="#">Ride History</a>
+  <a href={{ url_for('user.logout') }}>Sign Out</a>
+</div>
+<div class="floating-panel ham">
+
+<a style="width:30px;font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</a>
+</div>
+<div class="container3">
+  <div class="card">
+      <form method="PUT">
+       <div class="input-container"> 
+ 	<a>
+  	<img class="img-circle" src="static/images/rounded-image-250x250.png">
+  	</a>
+  	</div>
+        <div class="input-container">
+            <input type="text" id="name" name="name" required="required"/>
+            <label for="name">Name</label>
+            <div class="bar"></div>
+          </div>
+
+	<div class="input-container">
+            <input type="text" id="Username" name="username" required="required"/>
+            <label for="Username">Username</label>
+            <div class="bar"></div>
+          </div>
+          
+          <div class="input-container">
+            <input type="password" id="Password" name="password" required="required"/>
+            <label for="Password">Password</label>
+            <div class="bar"></div>
+          </div>
+          
+          <div class="input-container">
+            <input type="email" id="email" name="email" required="required"/>
+            <label for="email">e-mail</label>
+            <div class="bar"></div>
+          </div>
+
+          <div class="input-container">
+            <input type="text" id="phone" name="phone" required="required"/>
+            <label for="phone">Phone number</label>
+            <div class="bar"></div>
+          </div>
+        
+          <div class="button-container">
+            <button><span>Save</span></button>
+          </div>
+      </form>
+  </div>
+
+</body>
+
+</html>

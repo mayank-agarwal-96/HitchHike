@@ -5,6 +5,8 @@ from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g
+# from HitchHike.welcome import get_db
+
 
 class User(Document):
 
@@ -23,7 +25,7 @@ class User(Document):
     def get_user(cls,id):
         db = g.db
         user = db.get(id,None)
-
+        # print user
         if user is None:
             return None
         
@@ -58,7 +60,33 @@ class User(Document):
     def save(self):
         db = g.db
         db[self.email] = self._data
+
+
 class HitchHiker(User):
-    pass
+    user_type = TextField(default='hitchhiker')
+    
+
+    @classmethod
+    def get_user(cls, id):
+        db = g.db
+        user = db.get(id,None)
+        # print user
+        if user is None:
+            return None
+        
+        return cls.wrap(user)    
+
+
 class CarDriver(User):
-    pass
+    user_type = TextField(default='car_owner')
+
+
+    @classmethod
+    def get_user(cls, id):
+        db = g.db
+        user = db.get(id,None)
+        # print user
+        if user is None:
+            return None
+        
+        return cls.wrap(user)
