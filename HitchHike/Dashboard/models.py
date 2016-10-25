@@ -22,22 +22,22 @@ class AvailableCar(Document):
     	db = get_db()
         return cls.view(db,'_design/cars/_view/all-cars/')
 
-    @classmethod
-    def by_user(cls,email):
-        db = get_db()
-        cars = cls.view(
-                        db,
-                        '_design/cars/_view/by-user',
-                        key=email,
-                        include_docs=True
-                        )
-        if cars:
-            result = []
-            for c in cars:
-                result.append(cls.wrap(c))
-            result result[0]
-        else:
-        	return None
+    # @classmethod
+    # def by_user(cls,email):
+    #     db = get_db()
+    #     cars = cls.view(
+    #                     db,
+    #                     '_design/cars/_view/by-user',
+    #                     key=email,
+    #                     include_docs=True
+    #                     )
+    #     if cars:
+    #         result = []
+    #         for c in cars:
+    #             result.append(cls.wrap(c))
+    #         result result[0]
+    #     else:
+    #     	return None
 
     @classmethod
     def delete(cls, user):
