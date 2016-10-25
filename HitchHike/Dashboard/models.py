@@ -14,7 +14,7 @@ class AvailableCar(Document):
     end = TextField()
 
     def save(self):
-        db = get_db()
+        db = g.db
         self.store(db)
 
     @classmethod
