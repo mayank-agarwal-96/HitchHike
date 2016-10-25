@@ -15,3 +15,8 @@ class AvailableCar(Document):
     def save(self):
         db = g.db
         self.store(db)
+
+    @classmethod
+    def all(cls):
+    	db = g.db
+        return cls.view(db,'_design/cars/_view/all-cars/')
