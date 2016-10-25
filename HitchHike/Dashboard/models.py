@@ -6,8 +6,12 @@ from couchdb.mapping import Document, TextField, DateTimeField, ListField, Float
 from flask import g
 
 class AvailableCar(Document):
+    
     doc_type = TextField(default='available_cars')
-
     owner = TextField()
     start = TextField()
     end = TextField()
+
+    def save(self):
+        db = g.db
+        self.store(db)

@@ -223,7 +223,8 @@
           // console.log(place);
           destination_place_id = place.place_id;
             
-            $("#search").on('click',function(){          
+            $("#search").on('click',function(){  
+   
                 route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
 
             });

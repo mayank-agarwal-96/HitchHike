@@ -1,9 +1,11 @@
 import os
+import json
 
 from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
 from datetime import datetime
 from HitchHike.config import GOOGLE_API_KEY
 from flask_login import login_required, current_user
+from .models import AvailableCar
 # from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
 # from HitchHike.welcome import socketio
 
@@ -28,6 +30,19 @@ def profile():
 	return render_template('dashboard/profile.html')
     # return redirect(url_for('user.login'))
 
+@dashboard.route('/postride/', methods=['POST'])
+@login_required
+def post_ride():
+    # print "inPOST"
+    data = json.loads(request.data)
+    # print data
+    available = AvailableCar()
+    available.user = current_user.get_id()
+    available.start = data['orig']
+    available.end = data['dest']
+    available.save()
+    return json.dumps({'status':'OK'})
+	    
 #@socketio.on('message')
 #def join(msg):
 #    #room = 'room_cars'

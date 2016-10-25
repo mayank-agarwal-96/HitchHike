@@ -90,10 +90,10 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <script>
     function openNav() {
@@ -191,8 +191,8 @@
           // If the place has a geometry, store its place ID and route if we have
           // the other place ID
           origin_place_id = place.place_id;
-          route(origin_place_id, destination_place_id, travel_mode,
-                directionsService, directionsDisplay);
+          // route(origin_place_id, destination_place_id, travel_mode,
+          //       directionsService, directionsDisplay);
         });
 
         destination_autocomplete.addListener('place_changed', function() {
@@ -206,8 +206,36 @@
           // If the place has a geometry, store its place ID and route if we have
           // the other place ID
           destination_place_id = place.place_id;
-          route(origin_place_id, destination_place_id, travel_mode,
-                directionsService, directionsDisplay);
+          // route(origin_place_id, destination_place_id, travel_mode,
+          //       directionsService, directionsDisplay);          
+        });
+        $("#search").on('click',function(){  
+            var data = { orig : origin_place_id, dest : destination_place_id };
+            $.ajaxSetup({cache: false});
+            $.ajax({
+                     url: "/dashboard/postride/",
+                     type: "POST",
+                     dataType: "json",
+                     contentType: 'application/json; charset=utf-8',
+                     data: JSON.stringify({ orig : origin_place_id, dest : destination_place_id }),
+                     headers: {
+                                 "Pragma": "no-cache", 
+                                 "Cache-Control": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0", 
+                                 "Expires": 0, 
+                                 "Last-Modified": new Date(0), 
+                                 "If-Modified-Since": new Date(0)
+                             },
+                     success: function (result) {
+                            console.log("success");
+                         },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                     },
+                     cache: false,
+                 });      
+            route(origin_place_id, destination_place_id, travel_mode,
+                  directionsService, directionsDisplay);
         });
 
         function route(origin_place_id, destination_place_id, travel_mode,
