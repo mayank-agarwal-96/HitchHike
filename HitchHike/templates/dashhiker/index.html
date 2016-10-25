@@ -11,13 +11,24 @@
         margin: 0;
         padding: 0;
       }
-
+	.floating-panel {
+        position: absolute;
+        z-index: 5;
+        //*background-color:transparent;*//
+        padding: 5px;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+	
+       
       #map {
           height: 100%;
           width: 100%;
           top: 0;
           left: 0;
-          position: fixed
+          position: fixed;
               
       }
       .controls {
@@ -31,17 +42,17 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       }
 
-      #origin-input,
-      #destination-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 200px;
-      }
+	      #origin-input,
+	      #destination-input {
+		background-color: #fff;
+		font-family: Roboto;
+		font-size: 15px;
+		font-weight: 300;
+		margin-left: 12px;
+		padding: 0 11px 0 13px;
+		text-overflow: ellipsis;
+		width: 200px;
+	      }
 
       #origin-input:focus,
       #destination-input:focus {
@@ -101,19 +112,21 @@
     }
 
     function closeNav() {
-        document.getElementById("mySidenav").style.display = "none";
+        document.getElementById("sidebar-wrapper").style.display = "none";
     }
     </script>
  </head>
 
   <body>
-      <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
-      <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
-      
-      <div id="wrapper" style="height:100%; width:100%">
+     
+   
 
+      <div id="wrapper" style="height:100%; width:100%">
+   
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
+	    
+  <a id=" menu-tog" >&times</a>
             <ul class="sidebar-nav">
                 <li><a href="#">Account</a></li>
                 <li><a href="#">Settings</a></li>
@@ -122,30 +135,28 @@
         </div>
 
         <!-- Page content -->
-        <div id="page-content-wrapper" style="height:100%; width:100%">
-            <div class="container-fluid" style="height:100%; width:100%">
-                <div class="row" style="height:100%; width:100%">
-                    <div class="col-lg-12" style="height:100%; width:100%">
-                        <div class="row">
-                          <a href="#menu-toggle" class="gradient-menu" id="menu-toggle" style="height:100%; width:100%"></a>
-                          <button id="search" class="controls">Search</button>
-                        </div>
-                        <div id="map"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-      
+
+                <a style="width:30px;font-size:30px;cursor:pointer;z-index:100" id="menu-toggle">&#9776</a>
+		<input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+      		<input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
+                <button id="search" class="controls">Search</button>
+
+
+<div id="map"></div>
+</div>
+   
      <script>
         $("#menu-toggle").click( function (e){
             e.preventDefault();
             $("#wrapper").toggleClass("menuDisplayed");
         });
-    </script>
-    <script>
-        
+ 	
+	 $("#menu-tog").click( function (e){
+            e.preventDefault();
+            $("#wrapper").toggleClass("menuDisplayed");
+        });
+
           var socket = io.connect('http://' +  document.domain+ ':' + location.port);
   
           socket.on('connect', function() {
@@ -171,8 +182,9 @@
 
         var origin_input = document.getElementById('origin-input');
         var destination_input = document.getElementById('destination-input');
-        var modes = document.getElementById('mode-selector');
-
+        var modes = document.getElementById('search');
+	var button=document.getElementById('menu-toggle')
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
