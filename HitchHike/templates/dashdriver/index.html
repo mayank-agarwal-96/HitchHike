@@ -109,63 +109,61 @@
  </head>
 
   <body>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
+    <div id="wrapper" style="height:100%; width:100%">
     
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <a id=" menu-tog" >&times</a>
+        <ul class="sidebar-nav">
+          <li><a href="#">Account</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href={{ url_for('user.logout')}}>Logout</a></li>
+        </ul>
       </div>
-  </div> 
- </div>
-      <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
-      <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
       
-      <div id="wrapper" style="height:100%; width:100%">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li><a href="#">Account</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </div>
-
-        <!-- Page content -->
-        <div id="page-content-wrapper" style="height:100%; width:100%">
-            <div class="container-fluid" style="height:100%; width:100%">
-                <div class="row" style="height:100%; width:100%">
-                    <div class="col-lg-12" style="height:100%; width:100%">
-                        <a href="#menu-toggle" class="gradient-menu" id="menu-toggle" style="height:100%; width:100%"></a>
-                        <button id="search" class="controls">Search</button>
-                        
-                        <div id="map"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <!-- Page content -->
+      <a style="width:30px;font-size:30px;cursor:pointer;z-index:100" id="menu-toggle">&#9776</a>
+      <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+      <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
+      <button id="search" class="controls">Search</button>
+      <div id="map"></div>
     </div>
 
-      
-     <script>
+     <!-- Modal -->
+     <div class="modal fade" id="myModal" role="dialog">
+       <div class="modal-dialog">
+       
+         <!-- Modal content-->
+         <div class="modal-content">
+           <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <h4 class="modal-title">Request</h4>
+           </div>
+           <div  class="modal-body">
+             <p id="modal-body"></p>
+           </div>
+           <div class="modal-footer">
+             <button id="accept" type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
+             <button id="decline" type="button" class="btn btn-danger" data-dismiss="modal">Decline</button>
+           </div>
+         </div>
+     </div> 
+    </div>
+
+    <script>
         $("#menu-toggle").click( function (e){
             e.preventDefault();
             $("#wrapper").toggleClass("menuDisplayed");
         });
     </script>
     <script>
+
+      var newmsg;
+
+      $("#accept").on('click',function(){
+        socket.emit('messageaccept', {eid: newmsg['eid']});
+        console.log(newmsg);
+      });
 
         var socket = io.connect('http://' +  document.domain+ ':' + location.port);
       
@@ -174,9 +172,11 @@
           // alert("hurray");
         });
         socket.on('message',function(msg){
+          newmsg = msg;
           console.log(msg['orig']);
-            $("#myModal").modal();
-	  
+
+          $('#modal-body').text(msg['eid']+' is requesting a ride');
+          $("#myModal").modal();
         });
 
 
@@ -195,8 +195,9 @@
 
         var origin_input = document.getElementById('origin-input');
         var destination_input = document.getElementById('destination-input');
-        var modes = document.getElementById('mode-selector');
-
+        var modes = document.getElementById('search');
+        var button=document.getElementById('menu-toggle')
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
@@ -206,6 +207,7 @@
         var destination_autocomplete =
             new google.maps.places.Autocomplete(destination_input);
         destination_autocomplete.bindTo('bounds', map);
+
 
         function expandViewportToFitPlace(map, place) {
           if (place.geometry.viewport) {
@@ -245,7 +247,11 @@
           // route(origin_place_id, destination_place_id, travel_mode,
           //       directionsService, directionsDisplay);          
         });
-        $("#search").on('click',function(){  
+        $("#search").on('click',function(){
+            document.getElementById("destination-input").style.display = 'none';
+            document.getElementById("origin-input").style.display = 'none'; 
+            document.getElementById("search").style.display = 'none'; 
+
             var data = { orig : origin_place_id, dest : destination_place_id };
             $.ajaxSetup({cache: false});
             $.ajax({

@@ -5,6 +5,8 @@ from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g
+# from HitchHike.welcome import get_db
+
 
 class User(Document):
 

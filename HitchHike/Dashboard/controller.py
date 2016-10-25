@@ -8,6 +8,7 @@ from flask_login import login_required, current_user
 from .models import AvailableCar
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
 from HitchHike.welcome import socketio
+# from HitchHike.User.models import HitchHiker
 
 
 dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard",static_folder='../static')
@@ -49,6 +50,7 @@ def msgreceive(msg):
     print "origin" , msg['orig']
     print "dest" , msg['dest']
     print
+    msg['eid'] = session.get('user_id',None)
     # send(msg, broadcast=True)
     cars=AvailableCar.all();
     for i in cars:
@@ -56,7 +58,11 @@ def msgreceive(msg):
         emit('message', msg, room=i.owner)
     print
 
-
+@socketio.on('messageaccept')
+def msgaccept(msg):
+    msg['deid'] = session.get('user_id',None)
+    print msg
+    emit('message', msg, room=msg['eid'])
 
 @socketio.on('joined')
 def joined(message=None):

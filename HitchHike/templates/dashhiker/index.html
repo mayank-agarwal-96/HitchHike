@@ -101,11 +101,12 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-      
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.0/socket.io.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.0/socket.io.min.js"></script>
+    
     <script>
     function openNav() {
         document.getElementById("mySidenav").style.display = "block";
@@ -118,33 +119,46 @@
  </head>
 
   <body>
-     
-   
+    <div id="wrapper" style="height:100%; width:100%">
+    
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <a id=" menu-tog" >&times</a>
+        <ul class="sidebar-nav">
+          <li><a href="#">Account</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href={{ url_for('user.logout')}}>Logout</a></li>
+        </ul>
+      </div>
+      
+      <!-- Page content -->
+      <a style="width:30px;font-size:30px;cursor:pointer;z-index:100" id="menu-toggle">&#9776</a>
+      <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+      <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
+      <button id="search" class="controls">Search</button>
+      <div id="map"></div>
+    </div>
 
-      <div id="wrapper" style="height:100%; width:100%">
-   
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-	    
-  <a id=" menu-tog" >&times</a>
-            <ul class="sidebar-nav">
-                <li><a href="#">Account</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </div>
-
-        <!-- Page content -->
-
-
-                <a style="width:30px;font-size:30px;cursor:pointer;z-index:100" id="menu-toggle">&#9776</a>
-		<input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
-      		<input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
-                <button id="search" class="controls">Search</button>
-
-
-<div id="map"></div>
-</div>
+     <!-- Modal -->
+     <div class="modal fade" id="myModal" role="dialog">
+       <div class="modal-dialog">
+       
+         <!-- Modal content-->
+         <div class="modal-content">
+           <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <h4 class="modal-title">Ride</h4>
+           </div>
+           <div  class="modal-body">
+             <p id="modal-body"></p>
+           </div>
+           <!-- <div class="modal-footer">
+             <button id="accept" type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
+             <button id="decline" type="button" class="btn btn-danger" data-dismiss="modal">Decline</button>
+           </div> -->
+         </div>
+     </div> 
+    </div>
    
      <script>
         $("#menu-toggle").click( function (e){
@@ -152,7 +166,7 @@
             $("#wrapper").toggleClass("menuDisplayed");
         });
  	
-	 $("#menu-tog").click( function (e){
+	     $("#menu-tog").click( function (e){
             e.preventDefault();
             $("#wrapper").toggleClass("menuDisplayed");
         });
@@ -163,7 +177,10 @@
             socket.emit('joined', {});
           });
           socket.on('message',function(msg){
-            console.log(msg['orig']);
+            console.log("hey");
+            console.log(msg['deid']);
+            $('#modal-body').text(msg['deid']+' has accepted your request');
+            $("#myModal").modal();
           });
 
         
@@ -183,7 +200,7 @@
         var origin_input = document.getElementById('origin-input');
         var destination_input = document.getElementById('destination-input');
         var modes = document.getElementById('search');
-	var button=document.getElementById('menu-toggle')
+	      var button=document.getElementById('menu-toggle')
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
@@ -238,9 +255,12 @@
             // });
         });
 
-        $("#search").on('click',function(){          
-            route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
-
+        $("#search").on('click',function(){
+          document.getElementById("destination-input").style.display = 'none';
+          document.getElementById("origin-input").style.display = 'none'; 
+          document.getElementById("search").style.display = 'none'; 
+          
+          route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
         });
 
         function route(origin_place_id, destination_place_id, travel_mode,
