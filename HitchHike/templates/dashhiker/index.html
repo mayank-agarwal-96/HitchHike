@@ -146,14 +146,14 @@
     </script>
     <script>
         
-        //  var socket = io.connect('http://' +  document.domain+ ':' + location.port);
+          var socket = io.connect('http://' +  document.domain+ ':' + location.port);
   
-        // socket.on('connect', function() {
-        //     socket.emit('joined', {});
-        // });
-//        socket.on('message',function(msg){
-//            alert(msg['orig']);
-//        })
+          socket.on('connect', function() {
+            socket.emit('joined', {});
+          });
+          socket.on('message',function(msg){
+            console.log(msg['orig']);
+          });
 
         
       function initMap() {          
@@ -203,11 +203,7 @@
           // If the place has a geometry, store its place ID and route if we have
           // the other place ID
           origin_place_id = place.place_id;
-            
-            $("#search").on('click',function(){          
-                route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
 
-            });
         });
 
         destination_autocomplete.addListener('place_changed', function() {
@@ -223,11 +219,16 @@
           // console.log(place);
           destination_place_id = place.place_id;
             
-            $("#search").on('click',function(){  
+            // $("#search").on('click',function(){  
    
-                route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
+            //     route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
 
-            });
+            // });
+        });
+
+        $("#search").on('click',function(){          
+            route(origin_place_id, destination_place_id, travel_mode,directionsService, directionsDisplay);
+
         });
 
         function route(origin_place_id, destination_place_id, travel_mode,
@@ -243,7 +244,7 @@
           }, function(response, status) {
             if (status === 'OK') {
               directionsDisplay.setDirections(response);
-//                socket.send({orig: origin_place_id, dest: destination_place_id});
+               socket.emit('message', {orig: origin_place_id, dest: destination_place_id});
             } else  window.alert('Directions request failed due to ' + status);
           });
         }
