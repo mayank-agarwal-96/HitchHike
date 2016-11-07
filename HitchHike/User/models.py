@@ -90,3 +90,11 @@ class CarDriver(User):
             return None
         
         return cls.wrap(user)
+
+
+class Vehicle(Document):
+    doc_type = TextField(default='vehicle')
+    owner = TextField()
+    company = TextField()
+    model = TextField()
+    reg_number = TextField()
