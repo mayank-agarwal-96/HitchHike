@@ -70,8 +70,9 @@ class HitchHiker(User):
     def get_user(cls, id):
         db = g.db
         user = db.get(id,None)
-        # print user
-        if user['user_type'] != 'hitchhiker' or user is None:
+        if user is None:
+            return None
+        if user['user_type'] != 'hitchhiker':
             return None
 
         return cls.wrap(user)    
@@ -86,7 +87,9 @@ class CarDriver(User):
         db = g.db
         user = db.get(id,None)
         # print user
-        if user['user_type'] != 'car_owner' or user is None:
+        if user is None:
+            return None
+        if user['user_type'] != 'car_owner':
             return None
         
         return cls.wrap(user)
