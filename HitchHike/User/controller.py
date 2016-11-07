@@ -1,7 +1,7 @@
 import os
 
 from .models import CarDriver, HitchHiker,User
-from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
+from flask import Flask,Blueprint,session, redirect, flash, render_template, g, url_for, request
 from datetime import datetime
 from flask_login import login_user, logout_user, login_required
 from HitchHike.welcome import login_manager
@@ -60,17 +60,18 @@ def cardriversignup():
 def login():
     if request.method == 'POST':
         # session.pop('user', None)
+        user = None
         if 'hitch-login' in request.form:
             email = request.form.get('HitchHikerEmail', None)
             # print email
             if email is not None:
                 user = HitchHiker.get_user(email)
-                # print user
-                if user and user.check_password(request.form['hpassword']):
-                    login_user(user, remember=True)
-                    return redirect(url_for('dashboard.dash_user'))
-                return redirect(url_for('.login'))
-            return redirect(url_for('.login'))
+            # print user
+            if user and user.check_password(request.form['hpassword']):
+                login_user(user, remember=True)
+                return redirect(url_for('dashboard.dash_user'))
+            flash("Wrong username or password!", category='error')
+            # return redirect(url_for('.login'))
 
 
         elif 'car-login' in request.form:
