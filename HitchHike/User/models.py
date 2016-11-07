@@ -72,8 +72,6 @@ class HitchHiker(User):
         user = db.get(id,None)
         if user is None:
             return None
-        if user['user_type'] != 'hitchhiker':
-            return None
 
         return cls.wrap(user)    
 
