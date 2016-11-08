@@ -5,6 +5,7 @@ from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g
+from HitchHike.database import DataBase
 # from HitchHike.welcome import get_db
 
 
@@ -23,7 +24,7 @@ class User(Document):
 
     @classmethod
     def get_user(cls,id):
-        db = g.db
+        db = DataBase.db()
         user = db.get(id,None)
         # print user
         if user is None:
@@ -48,7 +49,8 @@ class User(Document):
             
 
     @classmethod
-    def all(cls,db):
+    def all(cls):
+        db = DataBase.db()
         return cls.view(db,'_design/user/_view/all-users')
 
     def set_password(self, password):
@@ -58,7 +60,7 @@ class User(Document):
         return check_password_hash(self.password, password)
 
     def save(self):
-        db = g.db
+        db = DataBase.db()
         db[self.email] = self._data
 
 
@@ -68,7 +70,7 @@ class HitchHiker(User):
 
     @classmethod
     def get_user(cls, id):
-        db = g.db
+        db = DataBase.db()
         user = db.get(id,None)
         if user is None:
             return None
@@ -82,7 +84,7 @@ class CarDriver(User):
 
     @classmethod
     def get_user(cls, id):
-        db = g.db
+        db = DataBase.db()
         user = db.get(id,None)
         # print user
         if user is None:
@@ -101,5 +103,20 @@ class Vehicle(Document):
     reg_number = TextField()
     
     def save(self):
-        db = g.db
+        db = DataBase.db()
         self.store(db)
+
+    @classmethod
+    def get_by_user(cls, user):
+        db = DataBase.db()
+        vehicle = cls.view(
+                            db,
+                            '_design/user/_view/vehicle/',
+                            key = user,
+                            include_docs=True
+                        )
+        result = []
+        for x in vehicle:
+            result.append(x)
+
+        return result[0]
