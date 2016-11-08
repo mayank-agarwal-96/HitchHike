@@ -102,4 +102,4 @@ class Vehicle(Document):
     
     def save(self):
         db = g.db
-        db[self.email] = self._data
+        self.store(db)
