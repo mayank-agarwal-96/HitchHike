@@ -99,3 +99,7 @@ class Vehicle(Document):
     company = TextField()
     model = TextField()
     reg_number = TextField()
+    
+    def save(self):
+        db = g.db
+        db[self.email] = self._data
