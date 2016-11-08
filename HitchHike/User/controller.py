@@ -26,7 +26,7 @@ def hitchhikersignup():
         if user.username is None or user.username == "":
             flash("Username is required", category = "error")
         user.email = form_data.get('email',None)
-        if user.email is None user.email == "":
+        if user.email is None or user.email == "":
             flash("Email is required", category = "error")
         password = form_data.get('password',None)
         if password is None or password == "":
@@ -59,7 +59,7 @@ def cardriversignup():
         if user.username is None or user.username == "":
             flash("Username is required", category = "error")
         user.email = form_data.get('email',None)
-        if user.email is None user.email == "":
+        if user.email is None or user.email == "":
             flash("Email is required", category = "error")
         password = form_data.get('password',None)
         if password is None or password == "":
