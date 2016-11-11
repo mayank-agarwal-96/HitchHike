@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 
 from flask import Flask,Blueprint,session, redirect, render_template, g, url_for, request
 from datetime import datetime
@@ -8,6 +9,7 @@ from flask_login import login_required, current_user
 from .models import AvailableCar
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
 from HitchHike.welcome import socketio
+from HitchHike.User.models import CarDriver, HitchHiker, Vehicle
 # from HitchHike.User.models import HitchHiker
 
 
@@ -44,7 +46,7 @@ def post_ride():
     available.save()
     return json.dumps({'status':'OK'})
 	    
-@socketio.on('message')
+@socketio.on('reqreceive')
 def msgreceive(msg):
     print
     print "origin" , msg['orig']
@@ -54,13 +56,33 @@ def msgreceive(msg):
     # send(msg, broadcast=True)
     cars=AvailableCar.all();
     for i in cars:
-        print i
+        origin1 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY)
+        origin2 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+msg['orig']+'&key='+GOOGLE_API_KEY)
+        print 'https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY
+        origin1lat = str(origin1.json()['results'][0]['geometry']['location']['lat'])
+        origin1lng = str(origin1.json()['results'][0]['geometry']['location']['lng'])
+        origin2lat = str(origin2.json()['results'][0]['geometry']['location']['lat'])
+        origin2lng = str(origin2.json()['results'][0]['geometry']['location']['lng'])
+        url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='+origin1lat+','+origin1lng+'&destinations='+origin2lat+','+origin2lng+'&key='+GOOGLE_API_KEY
+        print url
+        dist = requests.get(url)
+        print
+        print dist.json()
+        print
         emit('message', msg, room=i.owner)
     print
 
 @socketio.on('messageaccept')
 def msgaccept(msg):
-    msg['deid'] = session.get('user_id',None)
+    email = session.get('user_id',None)
+    driver = CarDriver.get_user(email)
+    print 'lolo'
+    msg['deid'] = email
+    msg['name'] = driver.name
+    msg['phone'] = driver.phone
+    vehicle = Vehicle.get_by_user(email)
+    msg['vehicle'] = vehicle.company + " " + vehicle.model
+    msg['regno'] = vehicle.reg_number
     print msg
     emit('message', msg, room=msg['eid'])
 

@@ -275,7 +275,10 @@
                         alert(thrownError);
                      },
                      cache: false,
-                 });      
+                 });
+            console.log("hey");
+            console.log(origin_place_id);
+            console.log(destination_place_id);
             route(origin_place_id, destination_place_id, travel_mode,
                   directionsService, directionsDisplay);
         });
