@@ -7,7 +7,7 @@ from HitchHike.config import GOOGLE_API_KEY
 from flask_login import login_required, current_user
 from .models import AvailableCar
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
-from HitchHike.welcome import socketio
+from HitchHike.welcome import socketio, redis_server
 
 
 dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard",static_folder='../static')
@@ -36,6 +36,8 @@ def post_ride():
     # print "inPOST"
     data = json.loads(request.data)
     # print data
+    data['current_user']=current_user.get_id()
+    redis_server.rpush('avaliable_car',data)
     available = AvailableCar()
     available.owner = current_user.get_id()
     available.start = data['orig']
@@ -50,6 +52,7 @@ def msgreceive(msg):
     print "dest" , msg['dest']
     print
     # send(msg, broadcast=True)
+    print redis_server.lrange('avaliable_car',0,-1)
     cars=AvailableCar.all();
     for i in cars:
         print i
