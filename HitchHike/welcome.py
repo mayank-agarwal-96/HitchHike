@@ -27,19 +27,19 @@ def Welcome():
     return redirect(url_for('user.login'))
     # return app.send_static_file('index.html')
 
-def get_db():
-    if not hasattr(g, 'db'):
-        server = couchdb.Server("https://"+cloudant_data['user']+':'+cloudant_data['password']+'@'+cloudant_data['host']+':'+cloudant_data['port'])
-        with app.app_context():
-            try:
-                db = server.create('hitchhike')
-            except:
-                db = server['hitchhike']
-    return db
+# def get_db():
+#     if not hasattr(g, 'db'):
+#         server = couchdb.Server("https://"+cloudant_data['user']+':'+cloudant_data['password']+'@'+cloudant_data['host']+':'+cloudant_data['port'])
+#         with app.app_context():
+#             try:
+#                 db = server.create('hitchhike')
+#             except:
+#                 db = server['hitchhike']
+#     return db
 
-@app.before_request
-def before_request():
-    g.db = get_db()
+# @app.before_request
+# def before_request():
+#     g.db = get_db()
     
     # g.user = None
     # if 'user' in session:
