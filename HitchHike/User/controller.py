@@ -3,8 +3,9 @@ import os
 from .models import CarDriver, HitchHiker,User, Vehicle
 from flask import Flask,Blueprint,session, redirect, flash, render_template, g, url_for, request
 from datetime import datetime
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from HitchHike.welcome import login_manager
+from HitchHike.Dashboard.models import AvailableCar
 
 user=Blueprint("user",__name__,template_folder="../template",static_folder='../static')
 
@@ -138,5 +139,7 @@ def update():
 @login_required
 def logout():
     # session.pop('user', None)
+    user = current_user.get_id()
+    AvailableCar.delete(user)
     logout_user()
     return redirect(url_for('.login'))
