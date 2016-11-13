@@ -58,6 +58,15 @@ class AvailableCar(Document):
         db.delete(car)            
 
 
+class RequestRide(Document):
+    doc_type = TextField(default='request_ride')
+    postedby = TextField()
+    origin = TextField()
+    destination = TextField()
+    acceptedby = TextField()
+    accepted = BooleanField(default="False")
+
+
 class Ride(Document):
     doc_type = TextField(default='ride')
     driver = TextField()
