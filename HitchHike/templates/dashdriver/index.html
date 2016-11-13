@@ -159,9 +159,38 @@
     <script>
 
       var newmsg;
+      var origin_place_id = null;
+      var destination_place_id = null;
 
       $("#accept").on('click',function(){
-        socket.emit('messageaccept', {eid: newmsg['eid']});
+
+        $.ajaxSetup({cache: false});
+        $.ajax({
+           url: "/dashboard/driver/ride/accept",
+           type: "POST",
+           dataType: "json",
+           contentType: 'application/json; charset=utf-8',
+           data: JSON.stringify(newmsg),
+           headers: {
+                       "Pragma": "no-cache", 
+                       "Cache-Control": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0", 
+                       "Expires": 0, 
+                       "Last-Modified": new Date(0), 
+                       "If-Modified-Since": new Date(0)
+                   },
+           success: function (result) {
+                  console.log("success");
+               },
+           error: function (xhr, ajaxOptions, thrownError) {
+              alert(xhr.status);
+              alert(thrownError);
+           },
+           cache: false,
+       });
+        newmsg['dorig'] = origin_place_id;
+        newmsg['ddest'] = destination_place_id;
+
+        socket.emit('messageaccept', newmsg);
         console.log(newmsg);
       });
 
@@ -181,8 +210,7 @@
 
 
       function initMap() {
-        var origin_place_id = null;
-        var destination_place_id = null;
+        
         var travel_mode = 'DRIVING';
         var map = new google.maps.Map(document.getElementById('map'), {
           mapTypeControl: false,
