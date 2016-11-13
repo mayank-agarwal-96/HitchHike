@@ -77,6 +77,7 @@ def msgreceive(msg):
         distval = dist.json()['rows'][0]['elements'][0]['distance']['value']
         print
         if ( distval <= 3000 ):
+            msg['owner'] = i.owner
             emit('message', msg, room=i.owner)
     print
 
@@ -84,7 +85,7 @@ def msgreceive(msg):
 def msgaccept(msg):
     email = session.get('user_id',None)
     driver = CarDriver.get_user(email)
-    print 'lolo'
+    print 'yolo'
     msg['deid'] = email
     msg['name'] = driver.name
     msg['phone'] = driver.phone
@@ -108,3 +109,9 @@ def joined(message=None):
     print session
     print
     #print session.get('name') + ' has entered the room: ' + room
+
+@dashboard.route('/driver/ride/accept',methods=['POST'])
+def accept_ride():
+    data = json.loads(request.data)
+    print data
+    return json.dumps({'status':'OK'})
