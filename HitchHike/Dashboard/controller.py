@@ -39,12 +39,19 @@ def post_ride():
     # print "inPOST"
     data = json.loads(request.data)
     # print data
-    available = AvailableCar()
-    available.owner = current_user.get_id()
-    available.start = data['orig']
-    available.end = data['dest']
-    available.save()
-    return json.dumps({'status':'OK'})
+    user = current_user.get_id()
+    car = AvailableCar.by_user(user)
+    if car is None:
+        available = AvailableCar()
+        available.owner = user
+        available.start = data['orig']
+        available.end = data['dest']
+        available.save()
+        return json.dumps({'status':'OK'})
+    else:
+        car.update(data['orig'], data['dest'])
+        return json.dumps({'status':'OK'})
+
 	    
 @socketio.on('reqreceive')
 def msgreceive(msg):
