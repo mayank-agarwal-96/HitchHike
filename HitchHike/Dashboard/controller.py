@@ -6,11 +6,11 @@ from flask import Flask,Blueprint,session, redirect, render_template, g, url_for
 from datetime import datetime
 from HitchHike.config import GOOGLE_API_KEY
 from flask_login import login_required, current_user
-from .models import AvailableCar
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
 from HitchHike.welcome import socketio
+
 from HitchHike.User.models import CarDriver, HitchHiker, Vehicle
-# from HitchHike.User.models import HitchHiker
+from .models import AvailableCar, Ride
 
 
 dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard",static_folder='../static')
@@ -115,4 +115,17 @@ def joined(message=None):
 def accept_ride():
     data = json.loads(request.data)
     print data
+    ride = Ride()
+    ride.driver = data['owner']
+    ride.hitchhiker = data['eid']
+    ride.origin = data['orig']
+    ride.destination = data['dest']
+    ride.driver_origin = data['dorig']
+    ride.driver_destination = data['ddest']
+    ride.save()
+
     return json.dumps({'status':'OK'})
+
+@dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
+def stop_ride():
+    pass

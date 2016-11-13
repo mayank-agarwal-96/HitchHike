@@ -66,6 +66,10 @@ class RequestRide(Document):
     acceptedby = TextField()
     accepted = BooleanField(default="False")
 
+    def save(self):
+        db = DataBase.db()
+        self.store(db)
+
 
 class Ride(Document):
     doc_type = TextField(default='ride')
@@ -76,8 +80,16 @@ class Ride(Document):
     distance = FloatField()
     origin = TextField()
     destination = TextField()
+    driver_origin = TextField()
+    driver_destination = TextField()
 
 
     def save(self):
         db = DataBase.db()
         self.store(db)
+
+    def calculate_distance(self):
+        pass
+
+    def calculate_fare(self):
+        pass

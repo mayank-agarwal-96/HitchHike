@@ -163,7 +163,9 @@
       var destination_place_id = null;
 
       $("#accept").on('click',function(){
-
+        newmsg['dorig'] = origin_place_id;
+        newmsg['ddest'] = destination_place_id;
+        
         $.ajaxSetup({cache: false});
         $.ajax({
            url: "/dashboard/driver/ride/accept",
@@ -187,8 +189,6 @@
            },
            cache: false,
        });
-        newmsg['dorig'] = origin_place_id;
-        newmsg['ddest'] = destination_place_id;
 
         socket.emit('messageaccept', newmsg);
         console.log(newmsg);
