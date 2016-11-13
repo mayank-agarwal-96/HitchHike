@@ -67,9 +67,10 @@ def msgreceive(msg):
         print url
         dist = requests.get(url)
         print
-        print dist.json()
+        distval = dist.json()['rows'][0]['elements'][0]['distance']['value']
         print
-        emit('message', msg, room=i.owner)
+        if ( distval <= 3000 ):
+            emit('message', msg, room=i.owner)
     print
 
 @socketio.on('messageaccept')
