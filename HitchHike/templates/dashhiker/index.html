@@ -5,12 +5,92 @@
   <title>Dashboard</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
-  <style></style>
+   <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .floating-panel {
+    position: absolute;
+    z-index: 5;
+    //*background-color:transparent;*//
+    padding: 5px;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    line-height: 30px;
+    padding-left: 10px;
+  }
+  #map {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+  }
+  .controls {
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  #origin-input,
+  #destination-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 200px;
+  }
+  #origin-input:focus,
+  #destination-input:focus {
+    border-color: #4d90fe;
+  }
+  #mode-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    margin-left: 12px;
+    padding: 5px 11px 0px 11px;
+  }
+  #mode-selector label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  .gradient-menu {
+    padding-left: 1.25em;
+    position: relative;
+  }
+  .gradient-menu:before {
+    top: 10%;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.21em;
+    bottom: 0.21em;
+    width: 1em;
+    background: linear-gradient(
+      to bottom, 
+      black, black 20%, 
+      white 20%, white 40%, 
+      black 40%, black 60%, 
+      white 60%, white 80%, 
+      black 80%, black 100%
+      );
+  }
+  </style>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  .navbar-inner {
+  
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -68,7 +148,7 @@
   		<li><a href="">History</a></li>
                 <li><a href="">Setting</a></li>
                 <li class="divider"></li>
-                <li><a href={{urlfor('user.logout') }}>Logout</a></li>
+                <li><a href={{url_for('user.logout') }}>Logout</a></li>
               </ul>
             </li>
           </ul>

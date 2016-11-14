@@ -18,29 +18,95 @@ class AvailableCar(Document):
         db = DataBase.db()
         self.store(db)
 
+    def update(self, origin, destination):
+        db = DataBase.db()
+        # car = AvailableCar.by_user(self.owner)
+        self.start = origin
+        self.end = destination
+
+        self.store(db)        
+
+
     @classmethod
     def all(cls):
     	db = DataBase.db()
         return cls.view(db,'_design/cars/_view/all-cars/')
 
-    # @classmethod
-    # def by_user(cls,email):
-    #     db = get_db()
-    #     cars = cls.view(
-    #                     db,
-    #                     '_design/cars/_view/by-user',
-    #                     key=email,
-    #                     include_docs=True
-    #                     )
-    #     if cars:
-    #         result = []
-    #         for c in cars:
-    #             result.append(cls.wrap(c))
-    #         result result[0]
-    #     else:
-    #     	return None
+    @classmethod
+    def by_user(cls,email):
+        db = DataBase.db()
+        cars = cls.view(
+                        db,
+                        '_design/cars/_view/by-user',
+                        key=email,
+                        include_docs=True
+                        )
+        if cars:
+            result = []
+            for c in cars:
+                result.append(c)
+            return result[0]
+        else:
+        	return None
+
 
     @classmethod
     def delete(cls, user):
         db = DataBase.db()
-        db.delete(AvailableCar.by_user(user))
+        car = AvailableCar.by_user(user)
+            
+        db.delete(car)            
+
+
+class RequestRide(Document):
+    doc_type = TextField(default='request_ride')
+    postedby = TextField()
+    origin = TextField()
+    destination = TextField()
+    acceptedby = TextField()
+    accepted = BooleanField(default="False")
+
+    def save(self):
+        db = DataBase.db()
+        self.store(db)
+
+
+class Ride(Document):
+    doc_type = TextField(default='ride')
+    driver = TextField()
+    hitchhiker = TextField()
+    vehicle = TextField()
+    fare = FloatField()
+    distance = FloatField()
+    origin = TextField()
+    destination = TextField()
+    driver_origin = TextField()
+    driver_destination = TextField()
+
+
+    def save(self):
+        db = DataBase.db()
+        self.store(db)
+
+    @classmethod
+    def by_user(cls,email):
+        db = DataBase.db()
+        rides = cls.view(
+                        db,
+                        '_design/ride/_view/ride-by-driver',
+                        key=email,
+                        include_docs=True
+                        )
+        if rides:
+            result = []
+            for c in rides:
+                result.append(c)
+            return result[0]
+        else:
+            return None
+
+    def calculate_distance(self):
+        pass
+
+    def calculate_fare(self):
+        pass
