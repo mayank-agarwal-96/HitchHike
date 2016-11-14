@@ -15,6 +15,17 @@ from .models import AvailableCar, Ride
 
 dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard",static_folder='../static')
 
+GOOGLE_GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?place_id={0}&key={1}'
+
+def reverse_geo_code(place_id):
+    tu = (place_id, GOOGLE_API_KEY)
+    location = requests.get(GOOGLE_GEOCODE_URL.format(*tu))
+    lat = str(location.json()['results'][0]['geometry']['location']['lat'])
+    lng = str(location.json()['results'][0]['geometry']['location']['lng'])
+
+    return [lat, lng]
+
+
 @dashboard.route('/driver',methods=['GET'])
 @login_required
 def dash_driver():
@@ -63,13 +74,18 @@ def msgreceive(msg):
     # send(msg, broadcast=True)
     cars=AvailableCar.all();
     for i in cars:
-        origin1 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY)
-        origin2 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+msg['orig']+'&key='+GOOGLE_API_KEY)
-        print 'https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY
-        origin1lat = str(origin1.json()['results'][0]['geometry']['location']['lat'])
-        origin1lng = str(origin1.json()['results'][0]['geometry']['location']['lng'])
-        origin2lat = str(origin2.json()['results'][0]['geometry']['location']['lat'])
-        origin2lng = str(origin2.json()['results'][0]['geometry']['location']['lng'])
+        # origin1 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY)
+        # origin2 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+msg['orig']+'&key='+GOOGLE_API_KEY)
+        # origin1lat = str(origin1.json()['results'][0]['geometry']['location']['lat'])
+        # origin1lng = str(origin1.json()['results'][0]['geometry']['location']['lng'])
+        # origin2lat = str(origin2.json()['results'][0]['geometry']['location']['lat'])
+        # origin2lng = str(origin2.json()['results'][0]['geometry']['location']['lng'])
+        origin1 = reverse_geo_code(i.start)
+        origin2 = reverse_geo_code(msg['orig'])
+        origin1lat = origin1[0]
+        origin1lng = origin1[1]
+        origin2lat = origin2[0]
+        origin2lng = origin2[1]
         url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='+origin1lat+','+origin1lng+'&destinations='+origin2lat+','+origin2lng+'&key='+GOOGLE_API_KEY
         print url
         dist = requests.get(url)
@@ -112,6 +128,7 @@ def joined(message=None):
 
 
 @dashboard.route('/driver/ride/accept',methods=['POST'])
+@login_required
 def accept_ride():
     data = json.loads(request.data)
     print data
@@ -125,6 +142,17 @@ def accept_ride():
     ride.save()
 
     return json.dumps({'status':'OK'})
+
+
+@dashboard.route('/driver/ride/', methods=['GET'])
+@login_required
+def driver_ride():
+    user = current_user.get_id()
+    if CarDriver.get_user(user):
+        ride = Ride.by_user(user)
+        print type(ride._data)
+        return "hello"
+
 
 @dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
 def stop_ride():

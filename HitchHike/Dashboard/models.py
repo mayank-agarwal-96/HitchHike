@@ -88,6 +88,23 @@ class Ride(Document):
         db = DataBase.db()
         self.store(db)
 
+    @classmethod
+    def by_user(cls,email):
+        db = DataBase.db()
+        rides = cls.view(
+                        db,
+                        '_design/ride/_view/ride-by-driver',
+                        key=email,
+                        include_docs=True
+                        )
+        if rides:
+            result = []
+            for c in rides:
+                result.append(c)
+            return result[0]
+        else:
+            return None
+
     def calculate_distance(self):
         pass
 
