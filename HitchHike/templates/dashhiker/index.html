@@ -112,54 +112,20 @@
 </head>
 
 <body>
-  <div id="wrapper" style="height:100%; width:100%">
-<!--
-    <div id="sidebar-wrapper">
-      <a id=" menu-tog" >&times</a>
-      <ul class="sidebar-nav">
-        <li><a href="#">Account</a></li>
-        <li><a href="#">Settings</a></li>
-        <li><a href={{ url_for('user.logout')}}>Logout</a></li>
-      </ul>
-    </div>
--->    
-<nav class="navbar navbar-default navbar-fixed-top control" style="background:transparent" role="navigation">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          
-          <ul class="nav navbar-nav navbar-right">
-            
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
-              </a>
-              <ul class="dropdown-menu">
+    <input id="origin-input" class="controls" style="z-index:100" type="text" placeholder="Enter an origin location">
+      <input id="destination-input" class="controls" style="z-index:100" type="text" placeholder="Enter a destination location"> 
+      <button id="search" style="z-index:100" class="controls">Search</button>
+      <div id="user-profile" style="padding:5px 80px;box-shadow:none" class="dropdown controls">
+        <a href="#" class="dropdown-toggle" style:"margin-right:50px" data-toggle="dropdown"><i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+        </a>
+        <ul class="dropdown-menu">
   		<li><a href="">History</a></li>
-                <li><a href="">Setting</a></li>
-                <li class="divider"></li>
-                <li><a href={{url_for('user.logout') }}>Logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-    <!-- Page content -->
-    <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
-    <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
-    <button id="search" class="controls">Search</button>
-    <div id="map"></div>
+        <li><a href="">Setting</a></li>
+        <li class="divider"></li>
+        <li><a href={{url_for('user.logout') }}>Logout</a></li>
+       </div>
+ 
+<div id="map"></div>
   </div>
 
   <!-- Modal -->
@@ -227,12 +193,14 @@
       var origin_input = document.getElementById('origin-input');
       var destination_input = document.getElementById('destination-input');
       var modes = document.getElementById('search');
+      var user_profile= document.getElementById('user-profile');
       var button=document.getElementById('menu-toggle')
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
-
+    
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(user_profile)
       var origin_autocomplete = new google.maps.places.Autocomplete(origin_input);
       origin_autocomplete.bindTo('bounds', map);
       var destination_autocomplete =
