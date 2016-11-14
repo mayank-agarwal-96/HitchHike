@@ -2,10 +2,10 @@
 <html>
 <head>
   <link rel="stylesheet" href="static/stylesheets/sidebar.css" />
-  <title>Place Autocomplete</title>
+  <title>Dashboard</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
-  <style>
+   <style>
   html, body {
     height: 100%;
     margin: 0;
@@ -21,15 +21,12 @@
     line-height: 30px;
     padding-left: 10px;
   }
-
-
   #map {
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
     position: fixed;
-
   }
   .controls {
     margin-top: 10px;
@@ -41,7 +38,6 @@
     outline: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
-
   #origin-input,
   #destination-input {
     background-color: #fff;
@@ -53,19 +49,16 @@
     text-overflow: ellipsis;
     width: 200px;
   }
-
   #origin-input:focus,
   #destination-input:focus {
     border-color: #4d90fe;
   }
-
   #mode-selector {
     color: #fff;
     background-color: #4d90fe;
     margin-left: 12px;
     padding: 5px 11px 0px 11px;
   }
-
   #mode-selector label {
     font-family: Roboto;
     font-size: 13px;
@@ -92,12 +85,12 @@
       black 80%, black 100%
       );
   }
-
   </style>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -119,24 +112,20 @@
 </head>
 
 <body>
-  <div id="wrapper" style="height:100%; width:100%">
-
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-      <a id=" menu-tog" >&times</a>
-      <ul class="sidebar-nav">
-        <li><a href="#">Account</a></li>
-        <li><a href="#">Settings</a></li>
-        <li><a href={{ url_for('user.logout')}}>Logout</a></li>
-      </ul>
-    </div>
-
-    <!-- Page content -->
-    <a style="width:30px;font-size:30px;cursor:pointer;z-index:100" id="menu-toggle">&#9776</a>
-    <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
-    <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
-    <button id="search" class="controls">Search</button>
-    <div id="map"></div>
+    <input id="origin-input" class="controls" style="z-index:100" type="text" placeholder="Enter an origin location">
+      <input id="destination-input" class="controls" style="z-index:100" type="text" placeholder="Enter a destination location"> 
+      <button id="search" style="z-index:100" class="controls">Search</button>
+      <div id="user-profile" style="padding:5px 80px;box-shadow:none" class="dropdown controls">
+        <a href="#" class="dropdown-toggle" style:"margin-right:50px" data-toggle="dropdown"><i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+        </a>
+        <ul class="dropdown-menu">
+  		<li><a href="">History</a></li>
+        <li><a href="">Setting</a></li>
+        <li class="divider"></li>
+        <li><a href={{url_for('user.logout') }}>Logout</a></li>
+       </div>
+ 
+<div id="map"></div>
   </div>
 
   <!-- Modal -->
@@ -204,12 +193,14 @@
       var origin_input = document.getElementById('origin-input');
       var destination_input = document.getElementById('destination-input');
       var modes = document.getElementById('search');
+      var user_profile= document.getElementById('user-profile');
       var button=document.getElementById('menu-toggle')
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
-
+    
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(user_profile)
       var origin_autocomplete = new google.maps.places.Autocomplete(origin_input);
       origin_autocomplete.bindTo('bounds', map);
       var destination_autocomplete =

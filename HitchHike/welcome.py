@@ -1,14 +1,13 @@
-import os
+import os	
 import couchdb
 import eventlet
 
 from flask import Flask, session, redirect, render_template, g, url_for, request
 from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
-from config import cloudant_data
+from config import cloudant_data,redis_config
 from flask_login import LoginManager
 from flask_socketio import SocketIO, send
-
 eventlet.monkey_patch()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -21,7 +20,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'user.login'
 socketio = SocketIO(app, async_mode='eventlet')
 socketio.init_app(app)
-
 @app.route('/')
 def Welcome():
     return redirect(url_for('user.login'))

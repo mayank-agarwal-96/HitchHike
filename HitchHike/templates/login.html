@@ -3,6 +3,7 @@
 <head>
   <style>
     @import url(http://fonts.googleapis.com/css?family=Roboto:400,100);
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     .login-card {
       padding: 40px;
@@ -116,7 +117,7 @@
     }
   </style>
 
-  <title></title>
+  <title>HitchHike</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
@@ -127,10 +128,10 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+  <link href="/static/stylesheets/full-slider.css" rel="stylesheet">
 </head>
 <body>
-
+<!--
   <nav class="navbar navbar-custom" style="height:1000%" >
     <div class="container" >
       
@@ -146,49 +147,112 @@
       </div>
     </div>
   </nav>
+-->
+    <!-- Page Content -->
 
-  <div class="container ">
-    {% for error in get_flashed_messages(with_categories=true, category_filter=["error"]) %}
-        <div class="alert alert-dismissable alert-danger" align="center">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ error[1] }}
-        </div>
-    {% endfor %}
-  </div>
+   <div id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
 
-  <div class="container">    
-    <div class="row " style="margin-top:10%">
-      <div class="col-md-5 col-sm-5 col-xs-12 col-xs-offset-1">
-        <div class="col-md-10 col-sm-10 col-xs-10 login-card">
-            <h1>Log-in as<br>Car Driver</h1><br>
-            <form method="POST">
-              <input type="text" name="CarDriverEmail" placeholder="E-mail">
-              <input type="password" name="password" placeholder="Password">
-              <input type="submit" name="car-login" class="login login-submit" value="login">
-            </form>
-              
-            <div class="login-help">
-              <a href="#">Forgot Password</a>
+        <!-- Wrapper for Slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <!-- Set the first background image using inline CSS below. -->
+
+                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide One');"></div>
+                
+		<div class="carousel-caption">
+                    <h2>Caption 1</h2>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the second background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Two');"></div>
+                <div class="carousel-caption">
+                    <h2>Caption 2</h2>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the third background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
+                <div class="carousel-caption">
+                    <h2>Caption 3</h2>
+                </div>
             </div>
         </div>
-    </div>
-      <div class="col-md-5 col-sm-5 col-xs-12 col-xs-offset-1">
-      <div class="col-md-10 col-sm-10 col-xs-10 login-card">
-        <h1>Log-in as<br>HitchHiker</h1><br>
-        <form method="POST">
-          <input type="text" name="HitchHikerEmail" placeholder="E-mail">
-          <input type="password" name="hpassword" placeholder="Password">
-          <input type="submit" name="hitch-login" class="login login-submit" value="login">
-        </form>
-          
-        <div class="login-help">
-           <a href="#">Forgot Password</a>
-        </div>
-      </div>
-      </div>
+  
+ 
 
-  </div>
-  </div>
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+	<div class="mainPitch" style="position:absolute;top:50px;left:10%;">
+		<div class="container">    
+    		    <div class="row " style="margin-top:10%;text-align:center">
+		      <div class="col-md-5 col-sm-5 col-xs-12 col-xs-offset-1">
+			<div class="col-md-10 col-sm-10 col-xs-10 login-card">
+			    <h1>Log-in as<br>Car Driver</h1><br>
+			    <form method="POST">
+			      <input type="text" name="CarDriverEmail" placeholder="E-mail">
+			      <input type="password" name="password" placeholder="Password">
+				{% for error in get_flashed_messages(with_categories=true, category_filter=["error"]) %}
+			        <div class="alert alert-dismissable alert-danger" align="center">
+ 		               <button type="button" class="close" data-dismiss="alert">&times;</button>
+            			{{ error[0] }}
+                               </div>
+    				{% endfor %}
+			      <input type="submit" name="car-login" class="login login-submit" value="login">
+			    </form>
+			      
+			    <div class="login-help">
+			      <a href="#">Forgot Password</a>
+			    </div>
+			</div>
+		      </div>
+		      <div class="col-md-5 col-sm-5 col-xs-12 col-xs-offset-1">
+			<div class="col-md-10 col-sm-10 col-xs-10 login-card">
+			  <h1>Log-in as<br>HitchHiker</h1><br>
+			  <form method="POST">
+			    <input type="text" name="HitchHikerEmail" placeholder="E-mail">
+			    <input type="password" name="hpassword" placeholder="Password">
+				{% for error in get_flashed_messages(with_categories=true, category_filter=["error"]) %}
+			        <div class="alert alert-dismissable alert-danger" align="center">
+ 		               <button type="button" class="close" data-dismiss="alert">&times;</button>
+            			{{ error[0] }}
+                               </div>
+    				{% endfor %}
+			    <input type="submit" name="hitch-login" class="login login-submit" value="login">
+			  </form>          
+			<div class="login-help">
+			   <a href="#">Forgot Password</a>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+       	      </div>
+	    </div>
+
+ 
+  <script src="/static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
 
 </body>
 </html>

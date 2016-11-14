@@ -64,7 +64,6 @@ def post_ride():
         car.update(data['orig'], data['dest'])
         return json.dumps({'status':'OK'})
 
-	    
 @socketio.on('reqreceive')
 def msgreceive(msg):
     print
@@ -116,7 +115,7 @@ def msgaccept(msg):
 def joined(message=None):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    room = session.get('user_id',None)    
+    room = session.get('user_id',None)
     join_room(room)
     print
     # print "hurray in controller"
