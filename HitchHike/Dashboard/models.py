@@ -5,7 +5,11 @@ from datetime import datetime
 from couchdb.mapping import Document, TextField, DateTimeField, ListField, FloatField, IntegerField, BooleanField
 from flask import g
 # from HitchHike.welcome import get_db
+from HitchHike.config import GOOGLE_API_KEY
 from HitchHike.database import DataBase
+from HitchHike.googleapi import GoogleApi
+
+GOOGLE_DISTANCE = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins={0},{1}&destinations={2},{3}&key={4}'
 
 class AvailableCar(Document):
     
@@ -104,9 +108,31 @@ class Ride(Document):
             return result[0]
         else:
             return None
+    
+
+    def by_hitchhiker(cls,email):
+        db = DataBase.db()
+        rides = cls.view(
+                        db,
+                        '_design/ride/_view/ride-by-hitchhiker',
+                        key=email,
+                        include_docs=True
+                        )
+        if rides:
+            result = []
+            for c in rides:
+                result.append(c)
+            return result[0]
+        else:
+            return None
+    
 
     def calculate_distance(self):
-        pass
+        db = DataBase.db()
+        self.distance = GoogleApi.distance(self.origin, self.destination)
+        self.store(db)
 
     def calculate_fare(self):
-        pass
+        db = DataBase.db()
+        self.fare =  float(self.distance/ 1000) * 4
+        self.update(db)

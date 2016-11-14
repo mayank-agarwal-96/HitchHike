@@ -132,6 +132,7 @@ def joined(message=None):
 def accept_ride():
     data = json.loads(request.data)
     print data
+
     ride = Ride()
     ride.driver = data['owner']
     ride.hitchhiker = data['eid']
@@ -152,6 +153,34 @@ def driver_ride():
         ride = Ride.by_user(user)
         return render_template('ride/driver.html')
 
+
+@dashboard.route('/hitchhiker/ride/', methods=['GET'])
+@login_required
+def hitchhiker_ride():
+    user = current_user.get_id()
+    if HitchHiker.get_user(user):
+        ride = Ride.by_hitchhiker(user)
+        if ride is not None:
+            return render_template('ride/hitchhiker.html')
+
+        else:
+            return "No active rides currently"    
+
+
+
 @dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
 def stop_ride():
-    pass
+    user = current_user.get_id()
+    ride = Ride.by_user(user)
+    if CarDriver.get_user(user):
+        if ride:
+            ride.doc_type = 'previous_ride'
+            ride.calculate_distance()
+            ride.calculate_fare()
+            return "fare :" + str(ride.fare)
+
+        else:
+            return "No active ride"
+
+    else:
+        return "Forbidden"
