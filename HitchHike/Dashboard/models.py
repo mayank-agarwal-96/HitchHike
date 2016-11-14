@@ -49,7 +49,10 @@ class AvailableCar(Document):
             result = []
             for c in cars:
                 result.append(c)
-            return result[0]
+            if len(result) > 0:
+                return result[0]
+            else:
+                return None
         else:
         	return None
 
@@ -105,11 +108,14 @@ class Ride(Document):
             result = []
             for c in rides:
                 result.append(c)
-            return result[0]
+            if len(result) > 0:
+                return result[0]
+            else:
+                return None
         else:
             return None
     
-
+    @classmethod
     def by_hitchhiker(cls,email):
         db = DataBase.db()
         rides = cls.view(
@@ -122,7 +128,10 @@ class Ride(Document):
             result = []
             for c in rides:
                 result.append(c)
-            return result[0]
+            if len(result) > 0:
+                return result[0]
+            else:
+                return None
         else:
             return None
     
@@ -135,4 +144,16 @@ class Ride(Document):
     def calculate_fare(self):
         db = DataBase.db()
         self.fare =  float(self.distance/ 1000) * 4
-        self.update(db)
+        self.store(db)
+
+    def stop(self):
+        db = DataBase.db()
+        self.doc_type = 'previous_ride'
+        self.calculate_distance()
+        self.calculate_fare()
+
+        summary = {}
+        summary['fare'] = self.fare
+        summary['distance'] = self.distance
+        self.store(db)
+        return summary

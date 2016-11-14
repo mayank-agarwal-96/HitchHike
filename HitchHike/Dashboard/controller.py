@@ -11,6 +11,7 @@ from HitchHike.welcome import socketio
 
 from HitchHike.User.models import CarDriver, HitchHiker, Vehicle
 from .models import AvailableCar, Ride
+from HitchHike.googleapi import GoogleApi
 
 
 dashboard=Blueprint("dashboard",__name__,template_folder="../template/dashboard",static_folder='../static')
@@ -151,7 +152,6 @@ def driver_ride():
     user = current_user.get_id()
     if CarDriver.get_user(user):
         ride = Ride.by_user(user)
-        print ride
         if ride is not None:
             data = {}
             hitch_origin_data = reverse_geo_code(ride.origin)
@@ -182,22 +182,30 @@ def hitchhiker_ride():
     if HitchHiker.get_user(user):
         ride = Ride.by_hitchhiker(user)
         if ride is not None:
-            return render_template('ride/hitchhiker.html')
+            data = {}
+            origin_data = GoogleApi.reverse_geo_code(ride.origin)
+            dest_data = GoogleApi.reverse_geo_code(ride.destination)
+            data['orig_lat'] = origin_data[0]
+            data['orig_lng'] = origin_data[1]
+            data['dest_lat'] = dest_data[0]
+            data['dest_lng'] = dest_data[1]
+
+            return render_template('ride/hitchhiker.html', data = data,map_key=GOOGLE_API_KEY)
 
         else:
             return "No active rides currently"    
 
+    else:
+        return "Error : Forbidden. \n You are not allowed to view this page."
 
 
 @dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
 def stop_ride():
     user = current_user.get_id()
-    ride = Ride.by_user(user)
     if CarDriver.get_user(user):
+        ride = Ride.by_user(user)
         if ride:
-            ride.doc_type = 'previous_ride'
-            ride.calculate_distance()
-            ride.calculate_fare()
+            summary = ride.stop()
             return "fare :" + str(ride.fare)
 
         else:
