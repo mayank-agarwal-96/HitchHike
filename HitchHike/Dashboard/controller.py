@@ -150,9 +150,7 @@ def driver_ride():
     user = current_user.get_id()
     if CarDriver.get_user(user):
         ride = Ride.by_user(user)
-        print type(ride._data)
-        return "hello"
-
+        return render_template('ride/driver.html')
 
 @dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
 def stop_ride():
