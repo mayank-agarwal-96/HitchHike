@@ -2,102 +2,15 @@
 <html>
 <head>
   <link rel="stylesheet" href="static/stylesheets/sidebar.css" />
-  <title>Place Autocomplete</title>
+  <title>Dashboard</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
-  <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  .floating-panel {
-    position: absolute;
-    z-index: 5;
-    //*background-color:transparent;*//
-    padding: 5px;
-    text-align: center;
-    font-family: 'Roboto','sans-serif';
-    line-height: 30px;
-    padding-left: 10px;
-  }
-
-
-  #map {
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: fixed;
-
-  }
-  .controls {
-    margin-top: 10px;
-    border: 1px solid transparent;
-    border-radius: 2px 0 0 2px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    height: 32px;
-    outline: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  }
-
-  #origin-input,
-  #destination-input {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    margin-left: 12px;
-    padding: 0 11px 0 13px;
-    text-overflow: ellipsis;
-    width: 200px;
-  }
-
-  #origin-input:focus,
-  #destination-input:focus {
-    border-color: #4d90fe;
-  }
-
-  #mode-selector {
-    color: #fff;
-    background-color: #4d90fe;
-    margin-left: 12px;
-    padding: 5px 11px 0px 11px;
-  }
-
-  #mode-selector label {
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 300;
-  }
-  .gradient-menu {
-    padding-left: 1.25em;
-    position: relative;
-  }
-  .gradient-menu:before {
-    top: 10%;
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.21em;
-    bottom: 0.21em;
-    width: 1em;
-    background: linear-gradient(
-      to bottom, 
-      black, black 20%, 
-      white 20%, white 40%, 
-      black 40%, black 60%, 
-      white 60%, white 80%, 
-      black 80%, black 100%
-      );
-  }
-
-  </style>
+  <style></style>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  .navbar-inner {
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -120,8 +33,7 @@
 
 <body>
   <div id="wrapper" style="height:100%; width:100%">
-
-    <!-- Sidebar -->
+<!--
     <div id="sidebar-wrapper">
       <a id=" menu-tog" >&times</a>
       <ul class="sidebar-nav">
@@ -130,9 +42,40 @@
         <li><a href={{ url_for('user.logout')}}>Logout</a></li>
       </ul>
     </div>
+-->    
+<nav class="navbar navbar-default navbar-fixed-top control" style="background:transparent" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          
+        </div>
 
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          
+          <ul class="nav navbar-nav navbar-right">
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu">
+  		<li><a href="">History</a></li>
+                <li><a href="">Setting</a></li>
+                <li class="divider"></li>
+                <li><a href={{urlfor('user.logout') }}>Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
     <!-- Page content -->
-    <a style="width:30px;font-size:30px;cursor:pointer;z-index:100" id="menu-toggle">&#9776</a>
     <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
     <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location"> 
     <button id="search" class="controls">Search</button>

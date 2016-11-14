@@ -103,7 +103,7 @@
     }
 
     function closeNav() {
-        document.getElementById("mySidenav").style.display = "none";
+        document.getElementById("sidebar-wrapper").style.display = "none";
     }
     </script>
  </head>
@@ -155,11 +155,15 @@
             e.preventDefault();
             $("#wrapper").toggleClass("menuDisplayed");
         });
+        $("menu-tog").click(function(e){
+            e.preventDefault();
+            $(#wrapper).hide();
+        });
     </script>
     <script>
 
       var newmsg;
-
+      $
       $("#accept").on('click',function(){
         socket.emit('messageaccept', {eid: newmsg['eid']});
         console.log(newmsg);

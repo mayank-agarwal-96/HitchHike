@@ -8,7 +8,7 @@ from HitchHike.config import GOOGLE_API_KEY
 from flask_login import login_required, current_user
 from .models import AvailableCar
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, rooms
-from HitchHike.welcome import socketio, redis_server
+from HitchHike.welcome import socketio
 from HitchHike.User.models import CarDriver, HitchHiker, Vehicle
 # from HitchHike.User.models import HitchHiker
 
@@ -39,15 +39,18 @@ def post_ride():
     # print "inPOST"
     data = json.loads(request.data)
     # print data
-    data['current_user']=current_user.get_id()
-    redis_server.rpush('avaliable_car',data)
+    json_obj={}
+    json_obj['current_user']=current_user.get_id()
+    json_obj['start']=data['orig']
+    json_obj['end']=data['dest']
+    redis_server.hmget('avaliable_cars',json_obj)
     available = AvailableCar()
     available.owner = current_user.get_id()
     available.start = data['orig']
     available.end = data['dest']
     available.save()
     return json.dumps({'status':'OK'})
-	    
+
 @socketio.on('reqreceive')
 def msgreceive(msg):
     print
@@ -56,12 +59,16 @@ def msgreceive(msg):
     print
     msg['eid'] = session.get('user_id',None)
     # send(msg, broadcast=True)
-    print redis_server.lrange('avaliable_car',0,-1)
-    cars=AvailableCar.all();
-    for i in cars:
-        origin1 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY)
+    cars=redis_server.hgetall('avaliable_cars')
+    print(cars[0]['start'])
+    print(cars)
+    for j in cars:
+        print(j)
+        i=json.loads(j)
+        print(i['start'])
+        origin1 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+i['start']+'&key='+GOOGLE_API_KEY)
         origin2 = requests.get('https://maps.googleapis.com/maps/api/geocode/json?place_id='+msg['orig']+'&key='+GOOGLE_API_KEY)
-        print 'https://maps.googleapis.com/maps/api/geocode/json?place_id='+i.start+'&key='+GOOGLE_API_KEY
+        print 'https://maps.googleapis.com/maps/api/geocode/json?place_id='+i['start']+'&key='+GOOGLE_API_KEY
         origin1lat = str(origin1.json()['results'][0]['geometry']['location']['lat'])
         origin1lng = str(origin1.json()['results'][0]['geometry']['location']['lng'])
         origin2lat = str(origin2.json()['results'][0]['geometry']['location']['lat'])
@@ -93,7 +100,7 @@ def msgaccept(msg):
 def joined(message=None):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    room = session.get('user_id',None)    
+    room = session.get('user_id',None)
     join_room(room)
     print
     # print "hurray in controller"
