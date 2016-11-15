@@ -112,14 +112,12 @@ def login():
                 user = CarDriver.get_user(email)
                 # print user.user_type
                 if user and user.check_password(request.form['password']):
-                    
                     login_user(user, remember=True)
                     return redirect(url_for('dashboard.dash_driver'))
 
                 return redirect(url_for('.login'))
             return redirect(url_for('.login'))
- 
-    return render_template('login.html')        
+    return render_template('login.html')
 
 
 
@@ -143,3 +141,50 @@ def logout():
     AvailableCar.delete(user)
     logout_user()
     return redirect(url_for('.login'))
+@user.route('/driver/settings',methods=['POST','GET'])
+@login_required
+def driver_setting():
+    user_id=current_user.get_id()
+    user =CarDriver.get_user(user_id)
+    if user is None:
+        return "Forbidden"
+    if request.method == 'POST':
+        form_data = request.form
+        vehicle = Vehicle().get_by_user(user_id)
+        data={}
+        data['name']=user['name']
+        data['phone']=user['phone']
+        data['email']=user['email']
+        data['carbrand']=vehicle['company']
+        data['carmodel']=vehicle['model']
+        data['carreg']=vehicle['reg_number']
+        user.name = form_data.get('name',None)
+        if user.name is None or user.name == "":
+            flash("Name is required", category = "error")
+        user.username = form_data.get('Username',None)
+        if user.username is None or user.username == "":
+            flash("Username is required", category = "error")
+        user.email = form_data.get('email',None)
+        if user.email is None or user.email == "":
+            flash("Email is required", category = "error")
+        password = form_data.get('password',None)
+        if password is not None or password!="":
+            user.set_password(password)
+        user.phone = form_data.get('phone',None)
+        if user.phone is None:
+            flash("Phone is required", category="error")
+
+        vehicle.company = form_data.get('carbrand', None)
+        if vehicle.company is None or vehicle.company == "" :
+            flash("Vehicle company is required", category="error")
+        vehicle.model = form_data.get('carmodel', None)
+        if vehicle.model is None or vehicle.model == "" :
+            flash("Vehicle model is required", category="error")
+        vehicle.reg_number = form_data.get('carreg', None)
+        if vehicle.reg_number is None or vehicle.reg_number == "" :
+            flash("Registration Number is required", category="error")
+        user.save()
+        vehicle.save()
+        # return redirect(url_for('login'))
+        return redirect(url_for('.login'))
+    return render_template('dashdriver/profile.html',data=data) 
