@@ -129,6 +129,19 @@ def hitchhiker_settings():
     if user is not None:
         if request.method == 'POST':
             form_data = request.form
+            print form_data
+            name = form_data.get('name', None)
+            email = form_data.get('email', None)
+            phone = int(form_data.get('phone', None))
+            password = form_data.get('password', None)
+
+            user.update(name, phone, email, password)
+            data = {}
+            data['name'] = user.name
+            data['email'] = user.email
+            data['phone'] = user.phone
+            return render_template('dashhiker/profile.html', data=data)
+
         else:
             data = {}
             data['name'] = user.name
