@@ -65,16 +65,16 @@ class User(Document):
 
     def update(self, name = None, phone = None, email = None, password = None):
         db = DataBase.db()
-        if name:
+        if name and name != '':
             self.name = name
 
-        if phone:
+        if phone and phone != '':
             self.phone = phone
 
-        if email:
+        if email and email != '':
             self.email = email
 
-        if password:
+        if password and password != '':
             self.set_password(password)
 
         self.store(db)
@@ -140,13 +140,13 @@ class Vehicle(Document):
     def update(self, company = None, reg = None, model = None):
         db = DataBase.db()
 
-        if company:
+        if company and company != '':
             self.company = company
 
-        if reg:
+        if reg and reg != '': 
             self.reg_number = reg
 
-        if model:
+        if model and model != '':
             self.model = model
 
         self.store(db)
