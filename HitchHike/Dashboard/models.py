@@ -135,6 +135,47 @@ class Ride(Document):
         else:
             return None
     
+    @classmethod
+    def hitchhiker_history(cls, email):
+        db = DataBase.db()
+        rides = cls.view(
+                        db,
+                        '_design/ride/_view/driver-previous-ride',
+                        key=email,
+                        include_docs=True
+                        )
+
+        if rides:
+            result = []
+
+            for i in rides:
+                result.append(i)
+
+            return result
+
+        else:
+            return None
+
+    @classmethod
+    def driver_history(cls, email):
+        db = DataBase.db()
+        rides = cls.view(
+                        db,
+                        '_design/ride/_view/hitch-previous-ride',
+                        key=email,
+                        include_docs=True
+                        )
+
+        if rides:
+            result = []
+
+            for i in rides:
+                result.append(i)
+
+            return result
+
+        else:
+            return None
 
     def calculate_distance(self):
         db = DataBase.db()
