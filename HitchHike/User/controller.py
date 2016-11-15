@@ -121,11 +121,23 @@ def login():
 
 
 
-@user.route('/update',methods=['PUT'])
-def update():
-    if request.method == 'PUT':
-        pass
+@user.route('/hitchhiker/settings',methods=['GET', 'POST'])
+@login_required
+def hitchhiker_settings():
+    user_id = current_user.get_id()
+    user = HitchHiker.get_user(user_id)
+    if user is not None:
+        if request.method == 'POST':
+            form_data = request.form
+        else:
+            data = {}
+            data['name'] = user.name
+            data['email'] = user.email
+            data['phone'] = user.phone
+            return render_template('dashhiker/profile.html', data=data)
 
+    else:
+        return "Forbidden : You are not allowed to view this page."
 # @user.route('/home')
 # def after_login():
 #     if g.user:
