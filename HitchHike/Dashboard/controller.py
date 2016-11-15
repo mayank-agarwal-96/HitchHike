@@ -150,7 +150,28 @@ def driver_ride():
     user = current_user.get_id()
     if CarDriver.get_user(user):
         ride = Ride.by_user(user)
-        return render_template('ride/driver.html')
+        print ride
+        if ride is not None:
+            data = {}
+            hitch_origin_data = reverse_geo_code(ride.origin)
+            hitch_dest_data = reverse_geo_code(ride.destination)
+            driver_origin_data = reverse_geo_code(ride.driver_origin)
+            driver_dest_data = reverse_geo_code(ride.driver_destination)
+            data['hitch_orig_lat'] = hitch_origin_data[0]
+            data['hitch_orig_lng'] = hitch_origin_data[1]
+            data['hitch_dest_lat'] = hitch_dest_data[0]
+            data['hitch_dest_lng'] = hitch_dest_data[1]
+            data['driver_orig_lat'] = driver_origin_data[0]
+            data['driver_orig_lng'] = driver_origin_data[1]
+            data['driver_dest_lat'] = driver_dest_data[0]
+            data['driver_dest_lng'] = driver_dest_data[1]
+            return render_template('ride/driver.html', data = data,map_key=GOOGLE_API_KEY)
+
+        else:
+            return "No active rides currently."
+
+    else:
+        return "Error : Forbidden. \n You are not allowed to view this page."
 
 @dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
 def stop_ride():

@@ -121,18 +121,10 @@
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var waypts = [];
-          waypts.push({
-            location: new google.maps.LatLng({{data['hitch_orig_lat']}}, {{data['hitch_orig_lng']}}),
-            stopover: true
-          });
-          waypts.push({
-            location: new google.maps.LatLng({{data['hitch_dest_lat']}}, {{data['hitch_dest_lng']}}),
-            stopover: true
-          });
 
         directionsService.route({
-          origin: {lat: {{data['driver_orig_lat']}}, lng: {{data['driver_orig_lng']}}},
-          destination: {lat: {{data['driver_dest_lat']}}, lng: {{data['driver_dest_lng']}}},
+          origin: {lat: {{data['orig_lat']}}, lng: {{data['orig_lng']}}},
+          destination: {lat: {{data['dest_lat']}}, lng: {{data['dest_lng']}}},
           waypoints: waypts,
           optimizeWaypoints: true,
           travelMode: 'DRIVING'
