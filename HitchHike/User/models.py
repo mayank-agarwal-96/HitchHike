@@ -63,6 +63,22 @@ class User(Document):
         db = DataBase.db()
         db[self.email] = self._data
 
+    def update(self, name = None, phone = None, email = None, password = None):
+        db = DataBase.db()
+        if name:
+            self.name = name
+
+        if phone:
+            self.phone = phone
+
+        if email:
+            self.email = email
+
+        if password:
+            self.set_password(password)
+
+        self.store(db)
+
 
 class HitchHiker(User):
     user_type = TextField(default='hitchhiker')
@@ -120,3 +136,17 @@ class Vehicle(Document):
             result.append(x)
 
         return result[0]
+
+    def update(self, company = None, reg = None, model = None):
+        db = DataBase.db()
+
+        if company:
+            self.company = company
+
+        if reg:
+            self.reg_number = reg
+
+        if model:
+            self.model = model
+
+        self.store(db)
