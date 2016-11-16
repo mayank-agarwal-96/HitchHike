@@ -36,15 +36,15 @@
         <span class="icon-bar "></span>
         <span class="icon-bar "></span>
       </button>
-      <a class="navbar-brand" style="color:white" href="#">HitchHike</a>
+      <a class="navbar-brand" style="color:white" href={{url_for('dashboard.dash_driver')}}>HitchHike</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class=""><a href="#" class="white">Dashboard</a></li>
-        <li class="active"><a href={{url_for('user.driver_settings')}} class="white">History</a></li>
+        <li class=""><a href={{url_for('dashboard.dash_driver')}} class="white">Dashboard</a></li>
+        <li class="active"><a class="white">History</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" class="white"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+        <li><a href={{url_for('user.driver_setting')}} class="white"><span class="glyphicon glyphicon-user"></span> Settings</a></li>
         <li><a href="{{url_for('user.logout')}}" class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>

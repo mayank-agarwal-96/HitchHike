@@ -41,11 +41,11 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class=""><a href="#" class="white">Dashboard</a></li>
-        <li class="active"><a href="#" class="white">History</a></li>
+        <li class="active"><a href={{url_for('user.hitchhiker_history')}} class="white">History</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" class="white"><span class="glyphicon glyphicon-user"></span> Settings</a></li>
-        <li><a href="#" class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        <li><a href={{url_for('user.hitchhiker_settings')}} class="white"><span class="glyphicon glyphicon-user"></span> Settings</a></li>
+        <li><a href={{url_for('user.logout')}}  class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>
   </div>
@@ -57,10 +57,12 @@
   <div class="panel-heading clearfix">
     <h3 class="panel-title pull-left">Settings</h3>
     <div class="btn-group pull-right">
+    <a href={{url_for('dashboard.dash_hiker')}}>
       <button class="btn btn-danger">
         <i class="fa fa-times"></i>
         Cancel
       </button>
+    </a>
       <button class="btn btn-success" id="save">
         <i class="fa fa-check"></i>
         Save
