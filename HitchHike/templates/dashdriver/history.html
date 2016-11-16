@@ -41,11 +41,11 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class=""><a href="#" class="white">Dashboard</a></li>
+        <li class={{url_for('dashboard.dash_driver')}} ><a href="#" class="white">Dashboard</a></li>
         <li class="active"><a class="white">History</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="{{url_for('user.driver_settings'))}}" class="white"><span class="glyphicon glyphicon-user"></span> Settings</a></li>
+        <li><a href="{{url_for('user.driver_setting')}}" class="white"><span class="glyphicon glyphicon-user"></span> Settings</a></li>
         <li><a href="{{url_for('user.logout')}}" class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>
@@ -159,8 +159,6 @@
 		  ride_data=result;               
 		},
            error: function (xhr, ajaxOptions, thrownError) {
-              alert(xhr.status);
-              alert(thrownError);
            },
            cache: false,
        });
