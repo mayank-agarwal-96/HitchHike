@@ -119,10 +119,10 @@
         <a href="#" class="dropdown-toggle" style:"margin-right:50px" data-toggle="dropdown"><i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
         </a>
         <ul class="dropdown-menu">
-  		<li><a href="user.hitchhiker_ride">History</a></li>
+  		<li><a href={{url_for('user.hitchhiker_history')}}>History</a></li>
         <li><a href={{url_for('user.hitchhiker_settings')}}>Settings</a></li>
         <li class="divider"></li>
-        <li><a href={{url_for('user.logout') }}>Logout</a></li>
+        <li><a href={{url_for('user.logout')}}>Logout</a></li>
        </div>
  
 <div id="map"></div>

@@ -215,7 +215,7 @@ def driver_history():
 @login_required
 def hitchhiker_history_data():
     user_id=current_user.get_id()
-    data=Ride.driver_history(user_id)
+    data=Ride.hitchhiker_history(user_id)
     rides =[]
     for i in data:
         rides.append(i._data)

@@ -61,8 +61,8 @@ class AvailableCar(Document):
     def delete(cls, user):
         db = DataBase.db()
         car = AvailableCar.by_user(user)
-            
-        db.delete(car)            
+        if car:
+            db.delete(car)            
 
 
 class RequestRide(Document):

@@ -37,16 +37,16 @@
         <span class="icon-bar "></span>
         <span class="icon-bar "></span>
       </button>
-      <a class="navbar-brand" style="color:white">HitchHike</a>
+      <a class="navbar-brand" href={{url_for('dashboard.dash_user')}} style="color:white">HitchHike</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class=""><a href="../dashboard/hitchhiker" class="white">Dashboard</a></li>
-        <li class="active"><a href="#" class="white">History</a></li>
+        <li class=""><a href={{url_for('dashboard.dash_user')}} class="white">Dashboard</a></li>
+        <li class="active"><a class="white">History</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="../user/hitchhiker/settings" class="white"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-        <li><a href="" class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        <li><a href={{url_for('user.hitchhiker_settings')}} class="white"><span class="glyphicon glyphicon-user"></span> Settings</a></li>
+        <li><a href={{url_for('user.logout')}} class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>
   </div>
@@ -158,7 +158,7 @@
 	var ride_data;	
 	$.ajaxSetup({cache: false});
         $.ajax({
-           url: "/user/driver/ride/data",
+           url: "/user/hitchhiker/ride/data",
            type: "GET",
            dataType: "json",
            contentType: 'application/json; charset=utf-8',
@@ -167,8 +167,7 @@
 		  ride_data=result;               
 		},
            error: function (xhr, ajaxOptions, thrownError) {
-              alert(xhr.status);
-              alert(thrownError);
+                console.log(error);
            },
            cache: false,
        });
