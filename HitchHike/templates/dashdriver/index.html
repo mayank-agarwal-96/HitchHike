@@ -191,6 +191,10 @@
                    },
            success: function (result) {
                   console.log("success");
+                  socket.emit('messageaccept', newmsg);
+                  console.log(newmsg);
+
+                  window.location.href='/dashboard/driver/ride/';                
                },
            error: function (xhr, ajaxOptions, thrownError) {
               alert(xhr.status);
@@ -199,10 +203,10 @@
            cache: false,
        });
 
-        socket.emit('messageaccept', newmsg);
-        console.log(newmsg);
+        // socket.emit('messageaccept', newmsg);
+        // console.log(newmsg);
 
-        window.location.href='/dashboard/driver/ride/';
+        // window.location.href='/dashboard/driver/ride/';
       });
 
         var socket = io.connect('http://' +  document.domain+ ':' + location.port);
