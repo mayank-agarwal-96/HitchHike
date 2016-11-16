@@ -170,6 +170,8 @@ class Ride(Document):
             result = []
 
             for i in rides:
+                i['origin'] = GoogleApi.get_name(i['origin'])
+                i['destination'] = GoogleApi.get_name(i['destination'])
                 result.append(i)
 
             return result
@@ -196,5 +198,7 @@ class Ride(Document):
         summary = {}
         summary['fare'] = self.fare
         summary['distance'] = self.distance
+        summary['car_owner'] = self.driver
+        summary['hitchhiker'] = self.hitchhiker
         self.store(db)
         return summary
