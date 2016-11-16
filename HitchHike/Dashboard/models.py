@@ -140,7 +140,7 @@ class Ride(Document):
         db = DataBase.db()
         rides = cls.view(
                         db,
-                        '_design/ride/_view/driver-previous-ride',
+                        '_design/ride/_view/hitch-previous-ride',
                         key=email,
                         include_docs=True
                         )
@@ -161,11 +161,11 @@ class Ride(Document):
         db = DataBase.db()
         rides = cls.view(
                         db,
-                        '_design/ride/_view/hitch-previous-ride',
+                        '_design/ride/_view/driver-previous-ride',
                         key=email,
                         include_docs=True
                         )
-
+        print rides
         if rides:
             result = []
 

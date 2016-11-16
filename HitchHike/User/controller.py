@@ -1,11 +1,11 @@
 import os
-
+import json
 from .models import CarDriver, HitchHiker,User, Vehicle
 from flask import Flask,Blueprint,session, redirect, flash, render_template, g, url_for, request
 from datetime import datetime
 from flask_login import login_user, logout_user, login_required, current_user
 from HitchHike.welcome import login_manager
-from HitchHike.Dashboard.models import AvailableCar
+from HitchHike.Dashboard.models import AvailableCar, Ride
 
 user=Blueprint("user",__name__,template_folder="../template",static_folder='../static')
 
@@ -195,4 +195,35 @@ def driver_setting():
         vehicle.update(company, reg_number, model)
         # return redirect(url_for('login'))
         return redirect(url_for('/'))
-    return render_template('dashdriver/profile.html',data=data)
+    return render_template('dashdriver/profile.html', data=data)
+@user.route('/driver/ride/data',methods=['GET'])
+@login_required
+def driver_history_data():
+    user_id=current_user.get_id()
+    data=Ride.driver_history(user_id)
+    rides =[]
+    for i in data:
+        rides.append(i._data)
+    return json.dumps(rides)
+@user.route('/driver/history',methods=['GET'])
+@login_required
+def driver_history():
+    user_id=current_user.get_id()
+    data=Ride.driver_history(user_id)
+    return render_template('dashdriver/history.html', data=data)
+@user.route('/hitchhiker/ride/data',methods=['GET'])
+@login_required
+def hitchhiker_history_data():
+    user_id=current_user.get_id()
+    data=Ride.driver_history(user_id)
+    rides =[]
+    for i in data:
+        rides.append(i._data)
+    return json.dumps(rides)
+@user.route('/hitchhiker/history',methods=['GET'])
+@login_required
+def hitchhiker_history():
+    user_id=current_user.get_id()
+    data=Ride.hitchhiker_history(user_id)
+    return render_template('dashhiker/history.html', data=data)
+
