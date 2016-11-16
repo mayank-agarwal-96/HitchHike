@@ -63,7 +63,7 @@
         Cancel
       </button>
     </a>
-      <button class="btn btn-success" id="save">
+      <button class="btn btn-success" id="save" form="userform" type="submit">
         <i class="fa fa-check"></i>
         Save
       </button>
@@ -126,12 +126,12 @@
                             jQuery selector to target links for which a fix should be added to not
                             allow those links to break out of fullscreen mode.
        */
-      $(function(){
-        $("#save").click( function(){
-          $("#userform").submit();
-        });
+      // $(function(){
+      //   $("#save").click( function(){
+      //     $("#userform").submit();
+      //   });
 
-      });
+      // });
 
 
       bootcards.init( {

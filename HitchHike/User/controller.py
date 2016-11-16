@@ -194,7 +194,7 @@ def driver_setting():
         user.update(name, phone, email, password)
         vehicle.update(company, reg_number, model)
         # return redirect(url_for('login'))
-        return redirect(url_for('/'))
+        return redirect(url_for('user.driver_setting'))
     return render_template('dashdriver/profile.html', data=data)
 @user.route('/driver/ride/data',methods=['GET'])
 @login_required
