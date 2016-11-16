@@ -276,6 +276,10 @@
         });
       }
     }
+
+    $('#myModal').on('hidden.bs.modal', function () {
+      window.location.href = '/dashboard/hitchhiker/ride/';
+    });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initMap"
     async defer></script>

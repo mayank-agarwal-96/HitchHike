@@ -201,6 +201,8 @@
 
         socket.emit('messageaccept', newmsg);
         console.log(newmsg);
+
+        window.location.href='/dashboard/driver/ride/';
       });
 
         var socket = io.connect('http://' +  document.domain+ ':' + location.port);
