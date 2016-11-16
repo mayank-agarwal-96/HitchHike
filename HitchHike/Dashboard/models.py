@@ -196,5 +196,7 @@ class Ride(Document):
         summary = {}
         summary['fare'] = self.fare
         summary['distance'] = self.distance
+        summary['car_owner'] = self.driver
+        summary['hitchhiker'] = self.hitchhiker
         self.store(db)
         return summary

@@ -114,11 +114,20 @@ def msgaccept(msg):
     print msg
     emit('message', msg, room=msg['eid'])
 
+@socketio.on('messageridestop')
+def msgstop(msg):
+    print 'ride stop'
+    print 'summary'
+    print msg
+    emit('message', msg, room=msg['hitchhiker'])
+    print 'done'
+
 @socketio.on('joined')
 def joined(message=None):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
     room = session.get('user_id',None)
+    print room
     join_room(room)
     print
     # print "hurray in controller"
@@ -201,17 +210,17 @@ def hitchhiker_ride():
         return "Error : Forbidden. \n You are not allowed to view this page."
 
 
-@dashboard.route('/driver/ride/stop',methods=['GET', 'POST'])
+@dashboard.route('/driver/ride/stop',methods=['GET'])
 def stop_ride():
     user = current_user.get_id()
     if CarDriver.get_user(user):
         ride = Ride.by_user(user)
         if ride:
             summary = ride.stop()
-            return "fare :" + str(ride.fare)
+            return json.dumps(summary)
 
         else:
-            return "No active ride"
+            return json.dumps({'Error':"No active ride"})
 
     else:
         return "Forbidden"
