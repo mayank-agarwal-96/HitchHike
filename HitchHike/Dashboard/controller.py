@@ -94,6 +94,9 @@ def msgreceive(msg):
         print
         if ( distval <= 3000 ):
             msg['owner'] = i.owner
+            hitchhiker = HitchHiker.get_user(msg['eid'])
+            msg['hname'] = hitchhiker.name
+            print msg
             emit('message', msg, room=i.owner)
     print
 
