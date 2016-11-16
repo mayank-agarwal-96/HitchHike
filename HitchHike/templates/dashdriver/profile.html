@@ -2,102 +2,156 @@
 <html>
 
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google" value="notranslate">
 
-  <title>Setting</title>
+  <title>HitchHike | Driver</title>
 
-  <link rel="stylesheet" href="static/stylesheets/header-login-signup.css">
-  <link rel="stylesheet" href="static/stylesheets/lstyle.css">
-  <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="static/stylesheets/dashboard.css">
+  <!-- Bootcards CSS files for desktop, iOS and Android -->
+  <!-- You'll only need to load one of these (depending on the device you're using) in production -->
 
+  <!-- Bootcards CSS files for desktop, iOS and Android -->
+  <!-- You'll only need to load one of these (depending on the device you're using) in production -->
+  <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-ios.min.css" rel="stylesheet"> -->
+   <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-desktop.min.css" rel="stylesheet">
+  <!--<link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-android.min.css" rel="stylesheet">-->
 
-<script>
-function openNav() {
-    document.getElementById("mySidenav").style.display = "block";
-}
-
-function closeNav() {
-    document.getElementById("mySidenav").style.display = "none";
-}
-</script>
+  <!-- Font awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+  <style>
+  .white{color:white}
+  </style>
 </head>
 
 <body>
-<!-- 
-<header class="header-login-signup">
-
-  <div class="header-limiter">
-
-    <h1><a href="#">HitchHike</a></h1>
-    <ul>
-      <li><a href="#">back to dashboard</a></li>
-    </ul>
-
+<nav class="navbar navbar-dark bg-primary navbar-fixed-top" style="">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" style="color:white" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar "></span>
+        <span class="icon-bar "></span>
+        <span class="icon-bar "></span>
+      </button>
+      <a class="navbar-brand" style="color:white" href="#">HitchHike</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class=""><a href="#" class="white">Dashboard</a></li>
+        <li class="active"><a href="#" class="white">History</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" class="white"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+        <li><a href="{{url_for('user.logout')}}" class="white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
   </div>
-
-</header>
- -->
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a>
-  <img class="img-circle" src="static/images/rounded-image-250x250.png">
-  </a>
-  
-  <a href="#"><h3>USER NAME</h3></a>
-  <a href={{ url_for('dashboard.dashboardpage') }}>Ride</a>
-  <a href={{ url_for('dashboard.profile') }}>Profile</a>
-  <a href="#">Ride History</a>
-  <a href={{ url_for('user.logout') }}>Sign Out</a>
-</div>
-<div class="floating-panel ham">
-
-<a style="width:30px;font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</a>
-</div>
-<div class="container3">
-  <div class="card">
-      <form method="PUT">
-       <div class="input-container"> 
- 	<a>
-  	<img class="img-circle" src="static/images/rounded-image-250x250.png">
-  	</a>
-  	</div>
-        <div class="input-container">
-            <input type="text" id="name" name="name" required="required"/>
-            <label for="name">Name</label>
-            <div class="bar"></div>
-          </div>
-
-	<div class="input-container">
-            <input type="text" id="Username" name="username" required="required"/>
-            <label for="Username">Username</label>
-            <div class="bar"></div>
-          </div>
-          
-          <div class="input-container">
-            <input type="password" id="Password" name="password" required="required"/>
-            <label for="Password">Password</label>
-            <div class="bar"></div>
-          </div>
-          
-          <div class="input-container">
-            <input type="email" id="email" name="email" required="required"/>
-            <label for="email">e-mail</label>
-            <div class="bar"></div>
-          </div>
-
-          <div class="input-container">
-            <input type="text" id="phone" name="phone" required="required"/>
-            <label for="phone">Phone number</label>
-            <div class="bar"></div>
-          </div>
-        
-          <div class="button-container">
-            <button><span>Save</span></button>
-          </div>
-      </form>
+</nav>
+<div class="col-md-10 col-sm-10 col-xs-12 offset-md-1">
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <h3 class="panel-title pull-left">Settings</h3>
+    <div class="btn-group pull-right">
+	<a href="../dashboard/driver">
+      <button class="btn btn-danger">
+        <i class="fa fa-times"></i>
+        Cancel
+      </button>
+	</a>
+      <button type="submit" form="form" class="btn btn-success">
+        <i class="fa fa-check"></i>
+        Save
+      </button>
+    </div>
   </div>
+  <div class="modal-body">
+    <form class="form-horizontal" method='post' id="form" name="form">
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Name</label>
+        <div class="col-xs-9">
+          <input type="text" id="name" name="name" class="form-control" value="{{data.name}}">
+        </div>
+      </div>
+        <div class="form-group">
+        <label class="col-xs-3 control-label">Email</label>
+        <div class="col-xs-9">
+          <input type="Email" id="email" name="email" class="form-control" value="{{data.email}}">
+        </div>
+      </div>
+<div class="form-group">
+        <label class="col-xs-3 control-label">Phone Number</label>
+        <div class="col-xs-9">
+          <input type="text" id="phone" name="phone" class="form-control" value="{{data.phone}}">
+        </div>
+      </div>
+<div class="form-group">
+        <label class="col-xs-3 control-label">Password</label>
+        <div class="col-xs-9">
+          <input type="password" id="password" name="password" class="form-control" value="">
+        </div>
+      </div>
+<div class="form-group">
+        <label class="col-xs-3 control-label">Car Registration Number</label>
+        <div class="col-xs-9">
+          <input type="text" id="carreg" name="carreg" class="form-control" value="{{data.carreg}}">
+        </div>
 
+      </div>
+<div class="form-group">
+        <label class="col-xs-3 control-label">Car Brand</label>
+        <div class="col-xs-9">
+          <input type="text" id="carbrand" name="carbrand" class="form-control" value="{{data.carbrand}}">
+        </div>
+      </div>
+<div class="form-group">
+        <label class="col-xs-3 control-label">Car Model</label>
+        <div class="col-xs-9">
+          <input type="text" id="carmodel" name="carmodel" class="form-control" value="{{data.carmodel}}">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+ <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootcards JS -->
+    <script src="../src/js/bootcards.js"></script>
+
+    <!--recommended: FTLabs FastClick library-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+
+    <script type="text/javascript">
+
+      /*
+       * Initialize Bootcards.
+       * 
+       * Parameters:
+       * - offCanvasBackdrop (boolean): show a backdrop when the offcanvas is shown
+       * - offCanvasHideOnMainClick (boolean): hide the offcanvas menu on clicking outside the off canvas
+       * - enableTabletPortraitMode (boolean): enable single pane mode for tablets in portraitmode
+       * - disableRubberBanding (boolean): disable the iOS rubber banding effect
+       * - disableBreakoutSelector (boolean) : for iOS apps that are added to the home screen:
+                            jQuery selector to target links for which a fix should be added to not
+                            allow those links to break out of fullscreen mode.
+       */
+      bootcards.init( {
+        offCanvasBackdrop : true,
+        offCanvasHideOnMainClick : true,
+        enableTabletPortraitMode : true,
+        disableRubberBanding : true 
+      });
+
+      //enable FastClick
+      window.addEventListener('load', function() {
+          FastClick.attach(document.body);
+      }, false);
+
+    </script>
 </body>
 
 </html>

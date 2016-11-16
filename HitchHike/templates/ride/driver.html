@@ -98,7 +98,7 @@
   </head>
 
   <body>
-   
+    <button id="stop" style="z-index:100" class="controls">Stop Ride</button>
     <div id="map"></div>
     <div id="directions-panel"></div>
 
@@ -111,7 +111,8 @@
           center: {lat: 41.85, lng: -87.65}
         });
         directionsDisplay.setMap(map);
-
+	var modes = document.getElementById('stop');
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
         calculateAndDisplayRoute(directionsService, directionsDisplay);
         
         // document.getElementById('submit').addEventListener('click', function() {

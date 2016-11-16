@@ -1,11 +1,11 @@
 import os
-
+import json
 from .models import CarDriver, HitchHiker,User, Vehicle
 from flask import Flask,Blueprint,session, redirect, flash, render_template, g, url_for, request
 from datetime import datetime
 from flask_login import login_user, logout_user, login_required, current_user
 from HitchHike.welcome import login_manager
-from HitchHike.Dashboard.models import AvailableCar
+from HitchHike.Dashboard.models import AvailableCar, Ride
 
 user=Blueprint("user",__name__,template_folder="../template",static_folder='../static')
 
@@ -75,10 +75,10 @@ def cardriversignup():
             flash("Vehicle company is required", category="error") 
         vehicle.model = form_data.get('vehicle', None)
         if vehicle.model is None or vehicle.model == "" :
-            flash("Vehicle model is required", category="error")         
+            flash("Vehicle model is required", category="error")
         vehicle.reg_number = form_data.get('regno', None)
         if vehicle.reg_number is None or vehicle.reg_number == "" :
-            flash("Registration Number is required", category="error")         
+            flash("Registration Number is required", category="error") 
         vehicle.owner = user.email
         user.save()
         vehicle.save()
@@ -112,14 +112,12 @@ def login():
                 user = CarDriver.get_user(email)
                 # print user.user_type
                 if user and user.check_password(request.form['password']):
-                    
                     login_user(user, remember=True)
                     return redirect(url_for('dashboard.dash_driver'))
 
                 return redirect(url_for('.login'))
             return redirect(url_for('.login'))
- 
-    return render_template('login.html')        
+    return render_template('login.html')
 
 
 
@@ -168,3 +166,64 @@ def logout():
     AvailableCar.delete(user)
     logout_user()
     return redirect(url_for('.login'))
+@user.route('/driver/settings',methods=['POST','GET'])
+@login_required
+def driver_setting():
+    user_id=current_user.get_id()
+    user =CarDriver.get_user(user_id)
+    vehicle = Vehicle().get_by_user(user_id)
+    type(user)
+    data={}
+    data['name']=user['name']
+    data['phone']=user['phone']
+    data['email']=user['email']
+    data['carbrand']=vehicle['company']
+    data['carmodel']=vehicle['model']
+    data['carreg']=vehicle['reg_number']
+    if user is None:
+        return "Forbidden"
+    if request.method == 'POST':
+        form_data = request.form
+        name = form_data.get('name',None)
+        email = form_data.get('email',None)
+        password = form_data.get('password',None)
+        phone = form_data.get('phone',None)
+        company = form_data.get('carbrand', None)
+        model = form_data.get('carmodel', None)
+        reg_number = form_data.get('carreg', None)
+        user.update(name, phone, email, password)
+        vehicle.update(company, reg_number, model)
+        # return redirect(url_for('login'))
+        return redirect(url_for('/'))
+    return render_template('dashdriver/profile.html', data=data)
+@user.route('/driver/ride/data',methods=['GET'])
+@login_required
+def driver_history_data():
+    user_id=current_user.get_id()
+    data=Ride.driver_history(user_id)
+    rides =[]
+    for i in data:
+        rides.append(i._data)
+    return json.dumps(rides)
+@user.route('/driver/history',methods=['GET'])
+@login_required
+def driver_history():
+    user_id=current_user.get_id()
+    data=Ride.driver_history(user_id)
+    return render_template('dashdriver/history.html', data=data)
+@user.route('/hitchhiker/ride/data',methods=['GET'])
+@login_required
+def hitchhiker_history_data():
+    user_id=current_user.get_id()
+    data=Ride.driver_history(user_id)
+    rides =[]
+    for i in data:
+        rides.append(i._data)
+    return json.dumps(rides)
+@user.route('/hitchhiker/history',methods=['GET'])
+@login_required
+def hitchhiker_history():
+    user_id=current_user.get_id()
+    data=Ride.hitchhiker_history(user_id)
+    return render_template('dashhiker/history.html', data=data)
+

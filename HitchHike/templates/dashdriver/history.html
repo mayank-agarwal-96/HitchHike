@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google" value="notranslate">
 
-  <title>Hitch Hiker</title>
+  <title>HitchHiker</title>
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
@@ -24,6 +24,9 @@
   <style>
   .white{color:white}
   </style>
+  <script>
+  	
+  </script>
 </head>
   <!-- fixed top navbar -->
 <nav class="navbar navbar-dark bg-primary navbar-fixed-top" style="">
@@ -57,32 +60,22 @@
     <div class="row">
 
       <!-- left list column -->
+
       <div class="col-sm-5 bootcards-list" id="list" data-title="Contacts">
         <div class="panel panel-default">       
           
           <div class="list-group">
-
+	{% for i in range(data | length) %}
             <!-- list of sample data -->
-	  
-            <a class="list-group-item" href="#">
-              <img src="img/Joseph Barish.jpg" class="img-rounded pull-left">
-              <h4 class="list-group-item-heading">Barish, Joseph</h4>
-              <p class="list-group-item-text">Date:14/11/6</p>
-            </a>
+	   	  
+            <a class="list-group-item list" id={{i}}>
 
-            <a class="list-group-item active" href="#">
-              <img src="img/Sofia Acey.jpg" class="img-rounded pull-left">
-              <h4 class="list-group-item-heading">Acey, Sofia</h4>
-              <p class="list-group-item-text">Date:14/11/6</p>
+              <h4 class="list-group-item-heading">{{data[i].hitchhiker}}</h4>
+              <p class="list-group-item-text">{{data[i].distance/1000}}km</p>
             </a>
-            
-            <a class="list-group-item " href="#">
-              <img src="img/Jerry Bess.jpg" class="img-rounded pull-left">
-              <h4 class="list-group-item-heading">Bess, Jerry</h4>
-              <p class="list-group-item-text">Date:14/11/6</p>
-            </a>
-            
-            
+	  	  
+            {% endfor %}
+		
             
           </div><!--list-group-->
 
@@ -97,41 +90,35 @@
           
 
           <!--contact details -->
-          <div id="contactCard">
+          <div id="contactCard" style="display:none">
 
             <div class="panel panel-default">
               <div class="panel-heading clearfix">
                 <h3 class="panel-title pull-left">Ride Detail</h3></div>
               <div class="list-group">
                 <div class="list-group-item">
-                  <img src="img/Sofia Acey.jpg" class="img-rounded pull-left">
                   <label>Ride With</label>
-                  <h4 class="list-group-item-heading">Acey, Sofia</h4>
+                  <h4 class="list-group-item-heading" id="ridewith"></h4>
                 </div>
 
                 <div class="list-group-item">
                   <label>From</label>
-                  <h4 class="list-group-item-heading">Masung Corp.</h4>
+                  <h4 class="list-group-item-heading" id="from"></h4>
                 </div>
 
                 <div class="list-group-item">
                   <label>To</label>
-                  <h4 class="list-group-item-heading">Finance Director (ZCT)</h4>
-                </div>
-
-                <div class="list-group-item">
-                  <label>Time</label>
-                  <h4 class="list-group-item-heading">22:10</h4>
+                  <h4 class="list-group-item-heading" id="to"></h4>
                 </div>
 
                 <a class="list-group-item" >
                   <label>Fare</label>
-                  <h4 class="list-group-item-heading">350 Rs</h4>
+                  <h4 class="list-group-item-heading" id="fare"></h4>
                 </a>
 
                 <a class="list-group-item" >
                   <label>distance</label>
-                  <h4 class="list-group-item-heading">21 km</h4>
+                  <h4 class="list-group-item-heading" id="distance"></h4>
                 </a>
               </div>
             </div><!--contact card-->
@@ -159,8 +146,42 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
 
     <script type="text/javascript">
-
-      /*
+    	
+	var ride_data;	
+	$.ajaxSetup({cache: false});
+        $.ajax({
+           url: "/user/driver/ride/data",
+           type: "GET",
+           dataType: "json",
+           contentType: 'application/json; charset=utf-8',
+           success: function (result) {
+                  console.log(result);
+		  ride_data=result;               
+		},
+           error: function (xhr, ajaxOptions, thrownError) {
+              alert(xhr.status);
+              alert(thrownError);
+           },
+           cache: false,
+       });
+        $('.list').click(function(e) {
+	    $('#contactCard').show();
+            $('.list').removeClass('active');
+            var $this = $(this);
+            $this.addClass('active');
+	    id=$this.attr('id');
+	   
+	    $("#ridewith").text(ride_data[id]['hitchhiker']);
+	    $("#from").text(ride_data[id]['origin']);
+	    $("#to").text(ride_data[id]['destination']);
+	    $("#fare").text(ride_data[id]['fare']);
+	    $("#distance").text(parseFloat(ride_data[id]['distance'])/1000);
+	    	   	
+	    
+                                                            //e.preventDefault();
+         
+        });
+	      /*
        * Initialize Bootcards.
        * 
        * Parameters:
