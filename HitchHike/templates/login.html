@@ -131,6 +131,26 @@
   <link href="/static/stylesheets/full-slider.css" rel="stylesheet">
 </head>
 <body>
+<nav class="navbar navbar-dark navbar-fixed-top" style="background:transparent">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" style="color:white" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar "></span>
+        <span class="icon-bar "></span>
+        <span class="icon-bar "></span>
+      </button>
+      <a class="navbar-brand" style="color:white" href="#">HitchHike</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{url_for('user.hitchhikersignup')}}" style="color:white"></span> Signup as Hitchhiker</a></li>
+        <li><a href="{{url_for('user.cardriversignup')}}" style="color:white"> Signup as Car Driver</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
 <!--
   <nav class="navbar navbar-custom" style="height:1000%" >
     <div class="container" >
@@ -166,21 +186,18 @@
                 <div class="fill" style="background-image:url('../static/images/1.jpg');"></div>
                 
 		<div class="carousel-caption">
-                    <h2>Caption 1</h2>
                 </div>
             </div>
             <div class="item">
                 <!-- Set the second background image using inline CSS below. -->
                 <div class="fill" style="background-image:url('../static/images/2.jpg');"></div>
                 <div class="carousel-caption">
-                    <h2>Caption 2</h2>
                 </div>
             </div>
             <div class="item">
                 <!-- Set the third background image using inline CSS below. -->
                 <div class="fill" style="background-image:url('../static/images/3.jpg');"></div>
                 <div class="carousel-caption">
-                    <h2>Caption 3</h2>
                 </div>
             </div>
         </div>
