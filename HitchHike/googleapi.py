@@ -30,3 +30,10 @@ class GoogleApi:
         dist = distance_data.json()['rows'][0]['elements'][0]['distance']['value']
 
         return dist
+
+    @classmethod
+    def get_name(cls, place_id):
+        tu = (place_id, cls._api_key)
+        location = requests.get(cls._geocode_url.format(*tu))
+        name = location.json()['results'][0]['address_components'][0]['long_name']
+        return name

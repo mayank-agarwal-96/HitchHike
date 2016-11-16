@@ -170,6 +170,8 @@ class Ride(Document):
             result = []
 
             for i in rides:
+                i['origin'] = GoogleApi.get_name(i['origin'])
+                i['destination'] = GoogleApi.get_name(i['destination'])
                 result.append(i)
 
             return result
