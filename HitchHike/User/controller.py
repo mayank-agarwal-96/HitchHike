@@ -90,7 +90,7 @@ def login():
         if 'hitch-login' in request.form:
             email = request.form.get('HitchHikerEmail', None)
             # print email
-            if email is not None:
+            if email is not None or email != "":
                 user = HitchHiker.get_user(email)
             # print user
             if user and user.check_password(request.form['hpassword']):
@@ -102,7 +102,7 @@ def login():
 
         elif 'car-login' in request.form:
             email = request.form.get('CarDriverEmail', None)
-            if email is not None:
+            if email is not None or email != "":
                 user = CarDriver.get_user(email)
                 # print user.user_type
                 if user and user.check_password(request.form['password']):
